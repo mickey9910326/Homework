@@ -1,0 +1,7 @@
+上一篇文章已經介紹過AVR的SPI到底是怎麼一回事了。這一篇就來教一點SPI的使用方法
+
+TMP121
+我們可以從datasheet中看到有一個腳位的名稱是CS(Chip select)，此腳位也就是在AVR-SPI中介紹之Slave的SS(Slave select)。當我們不只有一個slave時，我們該如何選擇致能哪一個Slave即是使用此腳位，如下圖(取自微基)，我們可以透過致能不同Slave中的SS(或CS)來選擇與哪個裝置傳輸資料。
+
+![363px-SPI_three_slaves.svg.png](http://user-image.logdown.io/user/17101/blog/16516/post/701558/jS5TgaPRAJdDzBGFnGGA_363px-SPI_three_slaves.svg.png)
+https://en.wikipedia.org/wiki/Chip_select
