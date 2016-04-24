@@ -8,7 +8,6 @@ Give a recursive algorithm to output all permutations of 1,..., n in lexicograph
 
 ``` c++
 // HW4_Q3
-// TODO
-// 使用Backtracking實作
-// 請看CODE
+使用Backtracking實作
+CODE解釋夠清楚了
 ```
