@@ -1,4 +1,4 @@
-## HW4_Q1
+## HW5_Q1
 
 ##### The Question
 
@@ -40,7 +40,10 @@ public:
     num_list(int num);
     void prepend(int data);
     bool is_permutation(int num);
+    int search(int value);
+    void delete_node(int n);
 };
+
 num_list::num_list(int num){
     /**
     * a function to construct a linked-list as question-required
@@ -59,17 +62,41 @@ num_list::prepend(int data) {
     */
 }
 
+num_list::delete_node(int node_num) {
+    /**
+    * a funtion to delete a node in the linked-list
+    * TODO
+    * use HW4_Q6 delete_node
+    */
+}
+
+num_list::search(int value) {
+    /**
+    * a funtion to search a value in the linked-list
+    * TODO
+    * @var cur_node 存放當前節點
+    * cur_node = root_node
+    * 當cur_node不等於value (while)
+    *   如果
+    *   cur_node往後移一個位置
+    *   
+    * 直到(i > n)
+    * 或下個節點的直大於n(cur_node->data() >= n)
+    */
+}
+
 num_list::is_permutation(int num){
     /**
     * a funtion to check if the digits of a number is a permutation of the linked-list
     * TODO
     * 當num不等於0時
-    * 收尋數字最後一位是否在list中(search(num%10))
-    * 有，刪除list中的數字(delete(num%10))，num = num/10
+    * 收尋數字最後一位是否在list中(n = search(num%10))
+    * 有，刪除list中的數字(delete(n))，num = num/10
     * 否，reteurn 0
     * reteurn 1
     */
 }
+
 int main(int argc, char const *argv[]) {
     /**
     * TODO

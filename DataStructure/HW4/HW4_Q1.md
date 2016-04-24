@@ -46,11 +46,11 @@ public:
          * @var cur_node 存放當前節點
          * @var new_node 愈加入之新節點
          * 先令 cur_node = root_node
-         * 隨後不斷往後走(for @var i=0)
-         * 每次產生新節點放入new_node，給值(2*i+1)
-         * new_node 與 cur_node 連接
-         * 直到(i > n)
-         * 或下個節點的直大於n(cur_node->data() >= n)
+         * cur_node 不斷往後走(for @var i=0)
+         *   每次產生新節點放入new_node，給值(2*i+1)
+         *   new_node 與 cur_node 連接
+         *   直到(i > n)
+         *   或下個節點的直大於n(cur_node->data() >= n)
          */
     };
     node* root(){return root_node;};
