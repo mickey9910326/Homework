@@ -1,3 +1,4 @@
 *.exe
 *.docx
-*.log 
+*.log
+*.demo.cpp

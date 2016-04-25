@@ -49,12 +49,12 @@ num_list::num_list(int num){
     * a function to construct a linked-list as question-required
     * TODO
     * 當數字不等於0時(while)
-    * 將數字最後一位插入頭之前( prepend(num%10) )
+    *   將數字最後一位插入頭之前( prepend(num%10) )
     * num = num/10;
     */
 }
 
-num_list::prepend(int data) {
+void num_list::prepend(int data) {
     /**
     * a funtion to prepend a node to a linked-list
     * TODO
@@ -62,7 +62,7 @@ num_list::prepend(int data) {
     */
 }
 
-num_list::delete_node(int node_num) {
+void num_list::delete_node(int node_num) {
     /**
     * a funtion to delete a node in the linked-list
     * TODO
@@ -70,29 +70,33 @@ num_list::delete_node(int node_num) {
     */
 }
 
-num_list::search(int value) {
+int num_list::search(int value) {
     /**
     * a funtion to search a value in the linked-list
     * TODO
+    * @var value 愈收尋之數
     * @var cur_node 存放當前節點
+    * @postion 紀錄當前節點位置
     * cur_node = root_node
-    * 當cur_node不等於value (while)
-    *   如果
+    * 當下個節點不為空 (while)
+    *   如果當前節點的值等於value
+    *     是，回傳postoin
     *   cur_node往後移一個位置
-    *   
-    * 直到(i > n)
-    * 或下個節點的直大於n(cur_node->data() >= n)
+    * 回傳0
+    *
+    * EXCAPTION
+    * list首位即為value
     */
 }
 
-num_list::is_permutation(int num){
+bool num_list::is_permutation(int num){
     /**
     * a funtion to check if the digits of a number is a permutation of the linked-list
     * TODO
     * 當num不等於0時
     * 收尋數字最後一位是否在list中(n = search(num%10))
-    * 有，刪除list中的數字(delete(n))，num = num/10
-    * 否，reteurn 0
+    *   有，刪除list中的數字(delete(n))，num = num/10
+    *   否，reteurn 0
     * reteurn 1
     */
 }

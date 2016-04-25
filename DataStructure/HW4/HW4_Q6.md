@@ -36,6 +36,7 @@ public:
         node* new_node = new node();
         new_node ->data(data);
         new_node ->next(head_node);
+        head_node = new_node;
     };
     void append(int data) {
         node* cur_node = head_node;
@@ -73,8 +74,14 @@ public:
             cout << "m <=0" << endl;
             return;
         }
-        node* cur_node = head_node;
+        if (node_num ==1 ) {
+            node* tmp_node = head_node;
+            head_node = head_node->next();
+            delete tmp_node;
+            return;
+        }
 
+        node* cur_node = head_node;
         int i = 1;
         while(cur_node->next()!=NULL && i !=node_num-1 ){
             cur_node = cur_node->next();
@@ -84,12 +91,13 @@ public:
             cout << "Wrong input, m > list long L" << endl;
             return;
         }
-        node* tmp_node = new node();
-        cur_node->next(cur_node->next());
+        node* tmp_node = cur_node->next();
+        cur_node->next(cur_node->next()->next());
         delete tmp_node;
     };
 };
 int main(int argc, char const *argv[]) {
     return 0;
 }
+
 ```
