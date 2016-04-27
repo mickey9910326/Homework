@@ -21,13 +21,13 @@ sy2  =sum(y.^2);
 N = [   n,  sx, sx2, sx3
        sx, sx2, sx3, sx4
       sx2, sx3, sx4, sx5
-      sx3, sx4, sx5, sx6]
+      sx3, sx4, sx5, sx6];
 r = [sy;sxy;sx2y;sx3y];
 a = N\r;
 
-ay = mean(y)
-St  = sum((y-ay).^2)
-Sr  = sum( ( y-a(1) - a(2)*x - a(3)*(x.^2) - a(4)*(x.^3) ).^2 )
+ay = mean(y);
+St  = sum((y-ay).^2);
+Sr  = sum( ( y-a(1) - a(2)*x - a(3)*(x.^2) - a(4)*(x.^3) ).^2 );
 Syx = sqrt(Sr/(n-m-1));
 r2  = (St-Sr)/St;
 
