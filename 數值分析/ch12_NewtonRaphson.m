@@ -14,7 +14,7 @@ j = inline(J)
 Max_iter = 10;
 es = 0.01;
 
-x =[1,1] 
+x =[1,1]
 iter = 0;
 ea   = 100;
 

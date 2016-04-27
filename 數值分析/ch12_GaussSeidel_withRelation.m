@@ -1,5 +1,5 @@
 clear;clc;
-% 鬆弛性的高斯-賽德法 
+% 鬆弛性的高斯-賽德法
 % Gauss-Seidel method with Relation
 % Step 1 參數設置
 A = [10,-2;-3,12];
@@ -27,7 +27,7 @@ while( (max(ea)>es) && (iteration < Max_iter) )
     xrold = xr;
     for i = 1:D
         %Gauss-Seidel method  with Relation operation
-        x(i) = d(i)-C(i,:)*xr;  
+        x(i) = d(i)-C(i,:)*xr;
         xr(i) = lambda*x(i) +(1-lambda)*xrold(i);
         if x(i) ~= 0
             ea(i) = abs( ( xr(i)-xrold(i) )/xr(i) ) *100;  %calculate the err in iteration
