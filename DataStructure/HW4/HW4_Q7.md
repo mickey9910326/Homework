@@ -5,7 +5,7 @@
 Reading assignment: Section 4.3  
 What is iterator, template in class ? What are advantages using them ? You can use examples to explain  
 
-##### The Code
+##### My Answer
 
 iterator : 迭代器
 

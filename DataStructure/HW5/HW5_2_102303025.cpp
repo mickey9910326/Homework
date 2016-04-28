@@ -31,14 +31,20 @@ public:
     void print();
     num_list* copy();
     int pop();
+    int value();
 };
 
 num_list::num_list(int num){
     head_node = new node();
-    head_node->data(num%10);
+    node* cur_node = head_node;
+    node* new_node;
+    cur_node->data(num%10);
     num/=10;
     while(num != 0) {
-        prepend(num%10);
+        new_node = new node();
+        new_node->data(num%10);
+        cur_node->next(new_node);
+        cur_node = new_node;
         num/=10;
     }
 }
@@ -58,6 +64,18 @@ void num_list::print() {
         cout<<"->"<<cur_node->data();
     }
     cout<<endl;
+}
+
+int num_list::value() {
+    int value = 0,i=1;
+    node* cur_node = head_node;
+    value += cur_node->data()*i;
+    while (cur_node->next()!=NULL) {
+        cur_node = cur_node->next();
+        i*=10;
+        value += cur_node->data()*i;
+    }
+    return value;
 }
 
 int num_list::pop() {
@@ -106,6 +124,6 @@ int main(int argc, char const *argv[]) {
     cout<<"num1: "; num_list_2->print();
     num_list* num_list_add = add_two_num_list( num_list_1, num_list_2 );
     cout<<"add : "; num_list_add->print();
-
+    cout<<"value = "<<num_list_add->value()<<endl;
     return 0;
 }

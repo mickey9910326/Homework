@@ -4,7 +4,7 @@
 
 How to delete the first node of a singly list ? Assume a list L with length m.
 
-##### The Code
+##### My Answer
 
 ``` c++
 void delete_node(int node_num) { //node_num = m

@@ -4,7 +4,7 @@
 
 Give a recursive algorithm to output all permutations of 1,..., n in lexicographical order.
 
-##### The Code
+##### My Answer
 
 ``` c++
 // HW4_Q3

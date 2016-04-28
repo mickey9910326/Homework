@@ -4,7 +4,7 @@
 
 Implement an algorithm to find the k-th to last element of a singly listed list, and analyze the complexity of your implementation.
 
-##### The Code
+##### My Answer
 
 ``` c++
 

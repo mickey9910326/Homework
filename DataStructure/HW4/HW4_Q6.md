@@ -7,7 +7,7 @@ Note : prepend : Insert a node before the first node
 Append : Insert a node after the last node  
 Insert : Insert a node before m-th node where m > 1  
 
-##### The Code
+##### My Answer
 
 ``` c++
 // HW4_Q6

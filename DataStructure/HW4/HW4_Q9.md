@@ -4,7 +4,7 @@
 
 Implement Q8 in C++ (This is handwriting homework.)
 
-##### The Code
+##### My Answer
 
 ``` c++
 

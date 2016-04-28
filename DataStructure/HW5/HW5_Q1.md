@@ -7,7 +7,7 @@ Note each digit of a number has to be saved in a node of a linked list
 Ex : 123 is saved as 1->2->3  
 Ex : the digits of 123 is a permutation of 231
 
-##### The Code
+##### My Answer
 
 ``` c++
 #include <iostream>
@@ -15,19 +15,15 @@ using namespace std;
 
 class node {
 private:
-    node *_prev;
     node *_next;
     int _data;
 public:
     node(){
-        _prev = NULL;
         _next = NULL;
         _data = 0;
     };
-    node *prev(){return _prev;};
     node *next(){return _next;};
     int   data(){return _data;}
-    void prev(node* n){_prev = n;};
     void next(node* n){_next = n;};
     void data(int d)  {_data = d;};
     void show();
@@ -96,7 +92,7 @@ bool num_list::is_permutation(int num){
     * 當num不等於0時
     * 收尋數字最後一位是否在list中(n = search(num%10))
     *   有，刪除list中的數字(delete(n))，num = num/10
-    *   否，reteurn 0
+    *   否，return 0
     * reteurn 1
     */
 }

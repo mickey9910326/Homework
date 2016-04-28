@@ -9,7 +9,7 @@ Now, write a program to add an even number m into this list. Also, put m at the 
 Ex: m = 4,  
 list after add 4 : 1 ⇔ 3 ⇔ 4 ⇔ 5
 
-##### The Code
+##### My Answer
 
 ``` c++
 
@@ -64,10 +64,10 @@ int main() {
      * 輸入list長度n
      * 判斷n
      * 產生list list(n)
-     * 先另 cur_node = root_node
-     * 隨後不斷往後走(while)
-     * 直到下個節點為空(cur_node->next()==NULL)
-     * 或下個節點的直大於n(cur_node->data() >= n)
+     * 令 cur_node = root_node
+     * cur_node不斷往後走(while)
+     *   直到下個節點為空(cur_node->next()==NULL)
+     *   或下個節點的直大於n(cur_node->data() >= n)
      */
     return 0;
 }
@@ -84,10 +84,10 @@ void list::add(int n){
      * 插入數字n到list中
      * @var cur_node 存放當前節點
      * @var new_node 愈加入之新節點
-     * 先令 cur_node = root_node
-     * 隨後不斷往後走(while)
-     * 直到下個節點為空(cur_node->next()==NULL)
-     * 或下個節點的直大於n(cur_node->data() >= n)
+     * 令 cur_node = root_node
+     * cur_node不斷往後走(while)
+     *   直到下個節點為空(cur_node->next()==NULL)
+     *   或下個節點的直大於n(cur_node->data() >= n)
      */
 }
 

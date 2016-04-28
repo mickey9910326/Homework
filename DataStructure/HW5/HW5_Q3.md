@@ -5,10 +5,10 @@
 Give two numbers, and write an algorithm to calculate the sum of the two number.  
 Note : Each digit of the number is saved in a node of a linked list in reverse order.  
 Hint: 123 is saved as 3->2->1  
-Hint: Input : 123 456 are represented as 3->2->1, 6->5->4 : 321 + 642 = 963 (9->6->3)  
+Hint: Input : 123 456 are represented as 3->2->1, 6->5->4 : 321 + 654 = 975 (9->7->5)  
 Output : 369  
 
-##### The Code
+##### My Answer
 
 ``` c++
 #include <iostream>
