@@ -4,23 +4,23 @@
 
 int main()
 {
-    Node *x;
+    Node *x=NULL;
     int i=0,j=0;
     char w;
-    
+
 
 		while(w!='e')
 		{
-			cin>>w;		
-				
+			cin>>w;
+
 			while( w=='i')	//	insert
 			{
 				cin>>i;
 				if (i==0)//0=end
 				{
 					break;
-				}		
-				Insert(i);			
+				}
+				Insert(i);
 			}
 			while(w=='d')	//	delete
 			{
@@ -29,13 +29,13 @@ int main()
 				{
 					break;
 				}
-					
+
 				x=Delete(i);
-				
+
 				if(x!=NULL)
 				{
 					free(x);
-				}			
+				}
 			}
 			while(w=='r')	//	reverse
 			{
@@ -45,10 +45,10 @@ int main()
 			while(w=='s')	//	swap
 			{
 				cin>>i>>j;
-				swap(i,j);
+				Swap(i,j);
 				break;
-			}				
-	
+			}
+
 	}
 	Print();
     return 0;

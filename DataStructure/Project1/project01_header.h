@@ -10,6 +10,9 @@ class node
 	public:
 		int key;
 		class node *next;
+		node(){
+			next = NULL;
+		};
 };
 
 typedef class node  Node; //define Node = struct node
@@ -23,5 +26,3 @@ void Print();
 void Swap(int, int);//a<b
 
 void Reverse();
-
-
