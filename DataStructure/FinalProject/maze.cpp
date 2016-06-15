@@ -26,6 +26,7 @@ public:
     int graph[ Length ][ Width ];
     Point start;
     Point end;
+    int w,l;
 public:
     Maze(){};
     Maze(int g[4][4],Point s,Point e){
@@ -37,7 +38,7 @@ public:
         start = s;
         end   = e;
     }
-    void catch_graph(int g[4][4]) {
+    void catch_graph(int g[w][l]) {
         int i,j;
         for(i = 0; i < Length ; i++) {
             for(j = 0; j < Width ; j++)

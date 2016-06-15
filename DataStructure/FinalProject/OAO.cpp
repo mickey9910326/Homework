@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define SIZE 7
+#define SIZE 10
 int count = 0;
 int min = 20;
 
@@ -14,15 +14,19 @@ int visit(int[][SIZE], Point, Point);
 void print(int[][SIZE]);
 
 int main(void) {
-    int maze[SIZE][SIZE] = {{2, 2, 2, 2, 2, 2, 2},
-                            {2, 0, 0, 0, 2, 0, 2},
-                            {2, 0, 2, 0, 2, 0, 2},
-                            {2, 0, 0, 0, 2, 0, 2},
-                            {2, 2, 2, 2, 2, 0, 2},
-                            {2, 0, 0, 0, 0, 0, 2},
-                            {2, 2, 2, 2, 2, 2, 2}};
+    int maze[SIZE][SIZE] = {{2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //0
+                            {2, 0, 2, 2, 2, 2, 2, 2, 2, 2}, //1
+                            {2, 0, 2, 2, 2, 2, 2, 2, 2, 2}, //2
+                            {2, 0, 2, 2, 2, 2, 2, 2, 2, 2}, //3
+                            {2, 0, 2, 2, 2, 2, 2, 2, 2, 2}, //4
+                            {2, 0, 2, 2, 2, 2, 2, 2, 2, 2}, //5
+                            {2, 0, 2, 2, 2, 2, 2, 2, 2, 2}, //6
+                            {2, 0, 2, 2, 2, 2, 2, 2, 2, 2}, //7
+                            {2, 0, 0, 0, 0, 0, 0, 0, 0, 2}, //8
+                            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2}};//9
 
-    if(!visit(maze, pt(1, 1), pt(3, 3))) {
+
+    if(!visit(maze, pt(1, 1), pt(8, 8))) {
         printf("\n沒有找到出口！\n");
     }
     print(maze);
@@ -39,33 +43,36 @@ Point pt(int x, int y) {
 }
 
 int visit(int maze[][SIZE], Point start, Point end) {
-    print(maze);
-    count++;
-    printf("count = %d\n",count);
-    printf("start = %d,%d,%d\n",start.x,start.y,maze[start.x][start.y]);
+    if( start.x!=0 || start.x!=SIZE || start.y!=0 || start.y!=SIZE){
+        print(maze);
+        count++;
+        printf("count = %d\n",count);
+        printf("start = %d,%d,%d\n",start.x,start.y,maze[start.x][start.y]);
 
-    if(!maze[start.x][start.y]) {
-         maze[start.x][start.y] = 1;
-         if(
-            !(visit(maze, pt(start.x    , start.y + 1), end) || //右
-              visit(maze, pt(start.x + 1, start.y    ), end) || //下
-              visit(maze, pt(start.x    , start.y - 1), end) || //左
-              visit(maze, pt(start.x - 1, start.y    ), end) )  //上
-           ) {
-                 maze[start.x][start.y] = 0;
-         }
-    }
-    if (start.x==end.x && start.y==end.y) {
-        if (min > count) {
-            min = count;
-            maze[start.x][start.y] = 0;
-            printf("min = %d\n", min);
+
+        if(!maze[start.x][start.y]) {
+             maze[start.x][start.y] = 1;
+             if(
+                !(visit(maze, pt(start.x    , start.y + 1), end) || //右
+                  visit(maze, pt(start.x + 1, start.y    ), end) || //下
+                  visit(maze, pt(start.x    , start.y - 1), end) || //左
+                  visit(maze, pt(start.x - 1, start.y    ), end) )  //上
+               ) {
+                     maze[start.x][start.y] = 0;
+             }
         }
+        if (start.x==end.x && start.y==end.y) {
+            if (min > count) {
+                min = count;
+                maze[start.x][start.y] = 0;
+                printf("min = %d\n", min);
+            }
+        }
+        count--;
+        printf("e--count = %d",count);
+        printf("   start = %d,%d,%d",start.x,start.y,maze[start.x][start.y]);
+        printf("   start & end= %d,%d\n",start.x==end.x,start.y==end.y);
     }
-    count--;
-    printf("e--count = %d",count);
-    printf("   start = %d,%d,%d",start.x,start.y,maze[start.x][start.y]);
-    printf("   start & end= %d,%d\n",start.x==end.x,start.y==end.y);
     return maze[end.x][end.y];
 }
 
