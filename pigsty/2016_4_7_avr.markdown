@@ -1,7 +1,135 @@
-上一篇文章已經介紹過AVR的SPI到底是怎麼一回事了。這一篇就來教一點SPI的使用方法
+[上一篇文章](http://pigsty.logdown.com/posts/699756-avr-spi)簡略的介紹了AVR的SPI。
+這一篇則是簡單的介紹：如何設定SPI、頻率周期等設定，以及簡單的SPI程式撰寫
 
-TMP121
+<!--more-->
+
+- - -
+
+#### TMP121 溫度感測IC
+![TM121_PIN.png](http://user-image.logdown.io/user/17101/blog/16516/post/701558/Nthx36kZTz2jqplnFBlr_TM121_PIN.png)
+#####CS
 我們可以從datasheet中看到有一個腳位的名稱是CS(Chip select)，此腳位也就是在AVR-SPI中介紹之Slave的SS(Slave select)。當我們不只有一個slave時，我們該如何選擇致能哪一個Slave即是使用此腳位，如下圖(取自微基)，我們可以透過致能不同Slave中的SS(或CS)來選擇與哪個裝置傳輸資料。
 
 ![363px-SPI_three_slaves.svg.png](http://user-image.logdown.io/user/17101/blog/16516/post/701558/jS5TgaPRAJdDzBGFnGGA_363px-SPI_three_slaves.svg.png)
 https://en.wikipedia.org/wiki/Chip_select
+
+##### SO
+
+輸出Slave SPI訊號
+
+##### SCK
+
+接收master SCK訊號
+
+這邊不做電路圖設計，如果有需要請詳閱TMP121的規格表。
+
+- - -
+
+## STEP.1 選擇適合的SCK頻率
+
+在TMP121的datasheet中可以看到他訊號的SCK最低週期為`100ns`，所以MASTER的SCK最低周期要在`100ns`以上，Master和Slave才能正確的溝通。
+
+假設振盪器頻率為 `11,059,200Hz`
+而TMP121可以接受的SCK最高頻率為 `1s / 100ns = 10,000,000Hz`
+所以我們需要把Master的頻率調到此值以下
+
+需要考慮的參數有三個
+ -SPCR bit1 ── **SPR1**
+ -SPCR bit0 ── **SPR0**
+ -SPSR bit0 ── **SPI2X**
+ 對照
+![SPI_FREQUENCY.png](http://user-image.logdown.io/user/17101/blog/16516/post/701558/zsDV9PgDTBamcPdKYAtj_SPI_FREQUENCY.png)
+選用第一列SPR0=0、SPR1=0、SPI2X=0即可。
+
+- - -
+
+## STEP.2 設定SPCR
+
+ - SPCR bit7 ── **SPIE** = 0 。沒有使用中斷。
+ - SPCR bit6 ── **SPE**  = 1 。致能。
+ - SPCR bit5 ── **DORD** = 0 。從低BYTE讀取，LSB。
+ - SPCR bit4 ── **MSTR** = 1 。因為是MASTER。
+ - SPCR bit3 ── **CPOL** = 1 。不太清楚對傳輸有沒有影響，網路上大部分文章設置為1。
+ - SPCR bit2 ── **CPHA** = 0 。前緣採樣。
+ - SPCR bit1 ── **SPR1** = 0 。如STEP1。
+ - SPCR bit0 ── **SPR0** = 0 。如STEP1。
+
+ - - -
+
+## STEP.3 設定DDRB
+
+  - PB7 ──  = 0。
+  - PB6 ──  = 0。
+  - PB5 ──  = 1。這邊用來致能TMP121之CS。
+  - PB4 ──  = 0。
+  - PB3 ── **MISO**  = 0。Master接收訊號，設置輸入。
+  - PB2 ── **MOSI** = 1。Master輸出訊號，設置輸出。
+  - PB1 ── **SCK** = 1。輸出SCK訊號，設置輸出。
+  - PB0 ── **SS** = 1。如果設置在INPUT，沒維持高電壓，會RESET MSTR，故這設置為OUTPUT
+
+- - -
+
+## 程式碼範例
+#### MSTER設定
+```c
+void spi_init_master (void)  //to initialize SPI as a master
+{
+    DDRB = (1<<PB5)|(1<<PB3);            //Set MOSI, SCK as Output
+    SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0); //Enable SPI, Set as Master
+}
+```
+#### SPI傳輸函式
+```c
+uint8_t SPI_send_receive(uint8_t data)
+{
+    SPDR = data;		// transmit the byte to be sent
+    uint4_t count = 0;
+
+    // wait for the transfer to complete. if wait time > 1us, then break
+    while ( !(SPSR & (1<<SPIF)) && count<1){
+        _delay_us(1);		
+        count++;				
+    };
+    return SPDR;		// then return the byte the slave just returned
+}
+```
+#### 主函式
+```c
+int main(void)
+{
+    ASA_M128_set();
+    double TEM;
+    uint8_t H,L;
+    printf("start!-----------------------------\n");
+    spi_init_master();
+    while (1){
+        _delay_ms(10);
+        PORTB = 32;              //enable TM121 CS to start transfer data
+        H = SPI_send_receive(0); //receive the High byte from TM121
+        L = SPI_send_receive(0); //receive the Low  byte from TM121
+        PORTB = 0 ;              //disable TM121 CS
+        TEM = (double)((H<<5) + (L>>3)) *0.0625; //translate 2byte data to temptature
+        printf("TEMP = %f\n",TEM);
+    }
+    return 0;
+}
+```
+
+- - -
+
+## 使用中斷
+
+Using Interrupts
+In case you are interested in using the SPI Interrupt of the AVR, you should keep in mind the following things–
+Be sure to include #include <avr/interrupt.h> header.
+Set the SPIE bit to 1 in the SPCR register.
+Enable global interrupts using sei().
+Next thing is to write an Interrupt Service Routine (ISR), which can be written something like this–
+// SPI Transmission/reception complete ISR
+ISR(SPI_STC_vect)
+{
+    // Code to execute
+    // whenever transmission/reception
+    // is complete.
+}
+If you want to know what are interrupts, may be this little introduction might be useful.
