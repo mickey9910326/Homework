@@ -1,5 +1,5 @@
 %---- prove
-sym a alpha d theta
+syms a alpha d theta
 
 Rx = [1 0 0 0 
       0 cos(alpha) -sin(alpha) 0
