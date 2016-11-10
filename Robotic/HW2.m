@@ -1,3 +1,5 @@
+%% 前置作業
+clear;clc;
 % syms a1 a2 a3 a4 a5 a6
 syms f1 f2 f3 f4 f5 f6
 syms d1 d2 d3 d4 d5 d6
@@ -85,24 +87,46 @@ d5 = 94.75;
 d6 = 0;
 
 
-T = subs(T)
+T = subs(T);
 ANS_T_1_6 = inv(T(:,:,1))*ANS_T_0_6;
-ANS_T_2_6 = inv(T(:,:,1))*ANS_T_0_6;
-ANS_T_1_6 = inv(T(:,:,1))*ANS_T_0_6;
-ANS_T_1_6 = inv(T(:,:,1))*ANS_T_0_6;
-ANS_T_1_6 = inv(T(:,:,1))*ANS_T_0_6;
+ANS_T_2_6 = inv(T(:,:,2))*ANS_T_1_6;
+ANS_T_3_6 = inv(T(:,:,1))*ANS_T_0_6;
+ANS_T_4_6 = inv(T(:,:,1))*ANS_T_0_6;
+ANS_T_5_6 = inv(T(:,:,1))*ANS_T_0_6;
 T_1_6     = T(:,:,2)*T(:,:,3)*T(:,:,4)*T(:,:,5)*T(:,:,6);
 
-
-ans_t1 = solve( ANS_T_1_6(2,4) == T_1_6(2,4) , t1)
-
+%% 求 t1
+%用 (2,4) 求出t1：
+eq1 = eq(ANS_T_1_6(2,4),T_1_6(2,4));
+ans_t1 = solve( eq1 , t1);
+ans_t1 = simplify(ans_t1);
+ans_t1
+% 得兩組解
 % 再來要觀察矩陣的關係，求出t2,t3,t4,t5
+%% 求 t5
+%依序帶入t1，並用 (2,3) 求出t1：
+t1 = ans_t1(2);
+tANS_T_1_6 = subs(ANS_T_1_6);
+tT_1_6 = subs(T_1_6);
 
-%先帶入t1之一：
-t1 = ans_t1(0);
-ANS_T_1_6 = subs(ANS_T_1_6);
-T_1_6 = subs(T_1_6);
+eq5 = eq(tANS_T_1_6(2,3),tT_1_6(2,3));
+ans_t5 = solve( eq5 , t5);
 
+t1 = ans_t1(1);
+tANS_T_1_6 = subs(ANS_T_1_6);
+tT_1_6 = subs(T_1_6);
+
+eq5 = eq(ANS_T_1_6(2,3),T_1_6(2,3));
+ans_t5(3:4) = solve( eq5 , t5);
+
+ans_t5 = simplify(ans_t5);
+ans_t5
+%得4組t5
+%% 求 t6
+% t1 = ans_t1(1);
+% 
+% ANS_T_1_6 = subs(ANS_T_1_6);
+% T_1_6 = subs(T_1_6);
 
 % ans_t1 = solve( [ANS_T_1_6(1,4) == T_1_6(1,4) , ANS_T_1_6(2,4) == T_1_6(2,4) , ANS_T_1_6(3,4) == T_1_6(3,4) ], [t1,t2,t3])
 % t1 = 0;
