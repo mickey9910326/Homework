@@ -38,7 +38,7 @@ for i=1:6
     alpha = alpha_im1(i);
     d = d_i(i);
     theta = theta_i(i);
-    T_a(:,:,i) = subs(Ti);
+    T_a(:,:,i) = subs(Ti)
 end
 T_0_6_a = double( T_a(:,:,1)*T_a(:,:,2)*T_a(:,:,3)*T_a(:,:,4)*T_a(:,:,5)*T_a(:,:,6) )
 fprintf('for theta = [0 0 0 0 0 0]\n');
@@ -47,7 +47,8 @@ fprintf('for theta = [0 0 0 0 0 0]\n');
 a_im1     = [0 0  425 392   0     0  ];
 alpha_im1 = [0 90 0   0    -90    90 ];
 d_i       = [0 0  0   109.3 94.75 0  ];
-theta_i   = [10 20 30 40 50 60 ];
+theta_i   = [0 0  0   0     0     0  ];
+theta_i   = [0 20 30 40 50 60 ];
 alpha_im1 = alpha_im1 *pi/180;
 theta_i   = theta_i *pi/180;
 
@@ -56,7 +57,7 @@ for i=1:6
     alpha = alpha_im1(i);
     d = d_i(i);
     theta = theta_i(i);
-    T_b(:,:,i) = subs(Ti);
+    T_b(:,:,i) = subs(Ti)
 end
 T_0_6_b = double( T_b(:,:,1)*T_b(:,:,2)*T_b(:,:,3)*T_b(:,:,4)*T_b(:,:,5)*T_b(:,:,6) )
-fprintf('for theta = [10 20 30 40 50 60]\n');
+fprintf('for theta = [0 20 30 40 50 60]\n');
