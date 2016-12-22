@@ -1,8 +1,11 @@
-clear all
+%% Jacobians: Velocities and Static Forces
+% Get a linear velocity to describe a linear motion of a point.
+% date:2016/12/22 
 %%
-syms z4 dtheta1 dtheta2 dtheta3 dtheta4
-
-
+clear all
+clc
+%% Define T and get R and P
+syms z4 dtheta1 dtheta2 dtheta3 
 
 % T(i) = T_(i-1)_i
 T(1:4,1:4,1:4) = sym(0);
@@ -17,13 +20,13 @@ T(:,:,2) = [ cosd(30) -sind(30) 0 30;
              0 0 0 1 ;];
 T(:,:,3) = [ cosd(30) -sind(30) 0 30;
              sind(30)  cosd(30) 0 0 ;
-             0 0 1 60;
+             0 0 1 0;
              0 0 0 1 ;];
 T(:,:,4) = [ cosd(0) -sind(0) 0 0 ;
              sind(0)  cosd(0) 0 0 ;
              0 0 1 -40+z4;
              0 0 0 1 ;];
-%%
+
 R(1:3,1:3,1:4) = sym(0);
 P(1:3,4) =  sym(0);
 for i = 1:4
@@ -31,7 +34,8 @@ for i = 1:4
     P(:,i) = T(1:3,4,i);
 end
 
-%%
+%% Solve W and V
+
 % rotational velocity
 % 算出每個點相對原點的轉動速度
 % W(i) = W_(i-1)_(i-1)
@@ -58,6 +62,7 @@ for i = 1:3
     EQU(i) = eq( V(i,5) , Vp(i) );
 end
 s = solve(EQU(1),EQU(2));
+%% Outcome
 
 dtheta1 = vpa(s.dtheta1)
 dtheta2 = vpa(s.dtheta2)
