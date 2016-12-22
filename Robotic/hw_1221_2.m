@@ -65,4 +65,7 @@ dtheta2 = vpa(s.dtheta2)
 W1 = subs(W(:,2))
 W2 = subs(W(:,3))
 
+fprintf('W3不影響P點速度，位置')
+
+V4 = vpa(subs(V(:,5)))
 
