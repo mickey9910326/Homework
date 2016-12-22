@@ -54,14 +54,16 @@ V(:,2) = inv(R(:,:,1))*( V(:,1) + cross(W(:,1),P(:,1)) );
 V(:,3) = inv(R(:,:,2))*( V(:,2) + cross(W(:,2),P(:,2)) );
 V(:,4) = inv(R(:,:,3))*( V(:,3) + cross(W(:,3),P(:,3)) );
 V(:,5) = inv(R(:,:,4))*( V(:,4) + cross(W(:,4),P(:,4)) );
+V_0_4 = R(:,:,1)*R(:,:,2)*R(:,:,3)*R(:,:,4)*V(:,5);
 
 % Vp PÂI³t«×ª¬ºA
 Vp = [10;0;0];
 
 for i = 1:3
-    EQU(i) = eq( V(i,5) , Vp(i) );
+    EQU(i) = eq( V_0_4(i) , Vp(i) );
 end
 s = solve(EQU(1),EQU(2));
+
 %% Outcome
 
 dtheta1 = vpa(s.dtheta1)
