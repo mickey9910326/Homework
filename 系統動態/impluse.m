@@ -37,7 +37,7 @@ Ir = 0.000000000000001;
 % initial condition
 a(1:3,1) = 0;
 v(1:3,1) = 0;
-p(1:3,1) = 0;
+p(1:3,1) = [0;0;10];
 
 phi(1) = 0;
 theta(1) = 0;
@@ -52,10 +52,14 @@ ddtheta(1) = 0;
 ddpsi(1) = 0;
 
 % controllable parameter
-u1 = 0; % 總升力 = b(w1^2 + w2^2 + w3^2 + w4^2)
+u1 = -m*g; % 總升力 = b(w1^2 + w2^2 + w3^2 + w4^2)
 u2 = 0; % 俯仰力矩 = b(w1^2 + w2^2 - w3^2 + w4^2) x軸 前後
 u3 = 0; % 翻轉力矩 = b(w1^2 - w2^2 + W3^2 - w4^2) y軸 左右
 u4 = 0; % 偏航力矩 = d(w1^2 - w2^2 + W3^2 - w4^2) z軸 改變方向 (+-為旋翼旋轉方向)
+
+F(1,1) = 0;
+F(2,1) = 0;
+F(3,1) = 0;
 
 % １　２
 % 　Ｘ
@@ -76,32 +80,36 @@ i_val = 0;
 i_val = 0;
 pre_ev = 0;
 for i = 1:1:length(t)
+    if(i<10)
+        F(1:3,i) = [0;0;0];
+    else
+        F(1:3,i) = [0;0;0];
+    end
+    %% 計算姿態、位置
+    theta(i+1) = theta(i) + dphi(i)*dt;
+    psi(i+1) = psi(i) + dpsi(i)*dt;
+    phi(i+1) = phi(i) + dphi(i)*dt;
     
+    dtheta(i+1) = dtheta(i) + ddphi(i)*dt;
+    dpsi(i+1) = dpsi(i) + ddpsi(i)*dt;
+    dphi(i+1) = dphi(i) + ddphi(i)*dt;
+    
+    ddphi(i+1) = dtheta(i)*dpsi(i)*(Iy-Iz)/Ix  + L/Ix*u2;
+    ddtheta(i+1) = dphi(i)*dpsi(i)*(Iz-Ix)/Iy  + L/Iy*u3;
+    ddpsi(i+1) = dphi(i)*dtheta(i)*(Ix-Iy)/Iz  + 1/Iz*u4;
+
+    a(1,i+1) = -( cos(phi(i))*sin(theta(i))*cos(psi(i)) + sin(phi(i))*sin(psi(i)) ) *u1(i)/m + F(1,i)/m;
+    a(2,i+1) = -( cos(phi(i))*sin(theta(i))*sin(psi(i)) - sin(phi(i))*sin(psi(i)) ) *u1(i)/m + F(2,i)/m;
+    a(3,i+1) = (cos(phi(i))*cos(theta(i))) *u1(i)/m + g + F(3,i)/m;
+
+    p(1:3,i+1) = p(1:3,i) + v(1:3,i)*dt;
+    v(1:3,i+1) = v(1:3,i) + a(1:3,i)*dt;
     %% PID
     ev(i) = (tv(3) - v(3,i));
     i_val = i_val + ev(i);
     d_val = ev(i) - pre_ev;
     pre_ev = ev(i);
-    u1 (i) =kp*ev(i) + ki*i_val +kd*d_val ;
-    %% 計算姿態、位置
-    dtheta(i+1) = dtheta(i) + ddphi(i)*dt;
-    dpsi(i+1) = dpsi(i) + ddpsi(i)*dt;
-    dphi(i+1) = dphi(i) + ddphi(i)*dt;
-
-    theta(i+1) = theta(i) + dphi(i)*dt;
-    psi(i+1) = psi(i) + dpsi(i)*dt;
-    phi(i+1) = phi(i) + dphi(i)*dt;
-
-    ddphi(i+1) = dtheta(i)*dpsi(i)*(Iy-Iz)/Ix  + L/Ix*u2;
-    ddtheta(i+1) = dphi(i)*dpsi(i)*(Iz-Ix)/Iy  + L/Iy*u3;
-    ddpsi(i+1) = dphi(i)*dtheta(i)*(Ix-Iy)/Iz  + 1/Iz*u4;
-
-    a(1,i+1) = -( cos(phi(i))*sin(theta(i))*cos(psi(i)) + sin(phi(i))*sin(psi(i)) ) *u1(i)/m;
-    a(2,i+1) = -( cos(phi(i))*sin(theta(i))*sin(psi(i)) - sin(phi(i))*sin(psi(i)) ) *u1(i)/m;
-    a(3,i+1) = (cos(phi(i))*cos(theta(i))) *u1(i)/m - g;
-
-    v(1:3,i+1) = v(1:3,i) + a(1:3,i)*dt;
-    p(1:3,i+1) = p(1:3,i) + v(1:3,i)*dt;
+    u1(i+1) =kp*ev(i) + ki*i_val +kd*d_val ;
 end
 u1 (i+1) = u1(i);
 t(length(t)+1) = Time+dt;

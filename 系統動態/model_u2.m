@@ -37,11 +37,11 @@ Ir = 0.000000000000001;
 % initial condition
 a(1:3,1) = 0;
 v(1:3,1) = 0;
-p(1:3,1) = 0;
+p(1:3,1) = [0;0;10];
 
 phi(1) = 0;
-theta(1) = 0;
-psi(1) = 0;
+theta(1) = 30*pi/180;
+psi(1) =  0;
 
 dphi(1) = 0;
 dtheta(1) = 0;
@@ -52,7 +52,7 @@ ddtheta(1) = 0;
 ddpsi(1) = 0;
 
 % controllable parameter
-u1 = 0; % 總升力 = b(w1^2 + w2^2 + w3^2 + w4^2)
+u1 = m*g*(cosd(30))^(-1); % 總升力 = b(w1^2 + w2^2 + w3^2 + w4^2)
 u2 = 0; % 俯仰力矩 = b(w1^2 + w2^2 - w3^2 + w4^2) x軸 前後
 u3 = 0; % 翻轉力矩 = b(w1^2 - w2^2 + W3^2 - w4^2) y軸 左右
 u4 = 0; % 偏航力矩 = d(w1^2 - w2^2 + W3^2 - w4^2) z軸 改變方向 (+-為旋翼旋轉方向)
@@ -65,24 +65,7 @@ u4 = 0; % 偏航力矩 = d(w1^2 - w2^2 + W3^2 - w4^2) z軸 改變方向 (+-為旋翼旋轉方向
 dt = 0.1; % 單位時間間隔(s)
 Time = 10; % 總時間(s)
 t = 0:dt:Time;
-
-tv = [0;0;0];
-
-kp = 4;
-ki = 1;
-kd = 0.2;
-
-i_val = 0;
-i_val = 0;
-pre_ev = 0;
 for i = 1:1:length(t)
-    
-    %% PID
-    ev(i) = (tv(3) - v(3,i));
-    i_val = i_val + ev(i);
-    d_val = ev(i) - pre_ev;
-    pre_ev = ev(i);
-    u1 (i) =kp*ev(i) + ki*i_val +kd*d_val ;
     %% 計算姿態、位置
     dtheta(i+1) = dtheta(i) + ddphi(i)*dt;
     dpsi(i+1) = dpsi(i) + ddpsi(i)*dt;
@@ -96,41 +79,52 @@ for i = 1:1:length(t)
     ddtheta(i+1) = dphi(i)*dpsi(i)*(Iz-Ix)/Iy  + L/Iy*u3;
     ddpsi(i+1) = dphi(i)*dtheta(i)*(Ix-Iy)/Iz  + 1/Iz*u4;
 
-    a(1,i+1) = -( cos(phi(i))*sin(theta(i))*cos(psi(i)) + sin(phi(i))*sin(psi(i)) ) *u1(i)/m;
-    a(2,i+1) = -( cos(phi(i))*sin(theta(i))*sin(psi(i)) - sin(phi(i))*sin(psi(i)) ) *u1(i)/m;
-    a(3,i+1) = (cos(phi(i))*cos(theta(i))) *u1(i)/m - g;
+    a(1,i+1) = -( sin(phi(i))*sin(theta(i))*cos(psi(i)) + sin(phi(i))*sin(psi(i)) ) *u1/m;
+    a(2,i+1) = -( cos(phi(i))*sin(theta(i))*cos(psi(i)) - sin(phi(i))*sin(psi(i)) ) *u1/m;
+    a(3,i+1) = (cos(phi(i))*cos(theta(i))) *u1/m - g;
 
     v(1:3,i+1) = v(1:3,i) + a(1:3,i)*dt;
     p(1:3,i+1) = p(1:3,i) + v(1:3,i)*dt;
 end
-u1 (i+1) = u1(i);
 t(length(t)+1) = Time+dt;
-ev(i+1) = ev(i);
 
 figure(1)
-subplot(4,1,1);
+subplot(3,1,1);
+plot(t,p(1,:))
+title('px-t');
+xlabel('t(s)')
+ylabel('px(m)')
+
+subplot(3,1,2);
+plot(t,p(2,:))
+title('py-t');
+xlabel('t(s)')
+ylabel('py(m)')
+
+subplot(3,1,3);
 plot(t,p(3,:))
-title('pz-t');
+title('px-t');
 xlabel('t(s)')
 ylabel('pz(m)')
 
-subplot(4,1,2);
-plot(t,v(3,:))
-title('vz-t');
+figure(2)
+subplot(3,1,1);
+plot(t,theta)
+title('theta-t');
 xlabel('t(s)')
-ylabel('vz(m/s)')
+ylabel('theta)')
 
-subplot(4,1,3);
-plot(t,-ev)
-title('err_ev-t');
+subplot(3,1,2);
+plot(t,phi)
+title('phi-t');
 xlabel('t(s)')
-ylabel('ev(m/s)')
+ylabel('phi')
 
-subplot(4,1,4);
-plot(t,-u1)
-title('u1-t');
+subplot(3,1,3);
+plot(t,psi)
+title('psi-t');
 xlabel('t(s)')
-ylabel('u1(F)')
+ylabel('psi')
 
 
 %% 
