@@ -35,12 +35,15 @@ b = 3.10*10^(-7);
 Ir = 0.000000000000001;
 
 % initial condition
+F = m*g*(cosd(30))^(-1);
+r=0.5;
+
 a(1:3,1) = 0;
-v(1:3,1) = 0;
+v(1:3,1) = [0;0;0];
 p(1:3,1) = [0;0;10];
 
 phi(1) = 0;
-theta(1) = 30*pi/180;
+theta(1) = 0;
 psi(1) =  0;
 
 dphi(1) = 0;
@@ -52,7 +55,7 @@ ddtheta(1) = 0;
 ddpsi(1) = 0;
 
 % controllable parameter
-u1 = m*g*(cosd(30))^(-1); % 總升力 = b(w1^2 + w2^2 + w3^2 + w4^2)
+u1 = m*g; % 總升力 = b(w1^2 + w2^2 + w3^2 + w4^2)
 u2 = 0; % 俯仰力矩 = b(w1^2 + w2^2 - w3^2 + w4^2) x軸 前後
 u3 = 0; % 翻轉力矩 = b(w1^2 - w2^2 + W3^2 - w4^2) y軸 左右
 u4 = 0; % 偏航力矩 = d(w1^2 - w2^2 + W3^2 - w4^2) z軸 改變方向 (+-為旋翼旋轉方向)
@@ -63,28 +66,32 @@ u4 = 0; % 偏航力矩 = d(w1^2 - w2^2 + W3^2 - w4^2) z軸 改變方向 (+-為旋翼旋轉方向
 
 
 dt = 0.1; % 單位時間間隔(s)
-Time = 10; % 總時間(s)
+Time = 100; % 總時間(s)
 t = 0:dt:Time;
 for i = 1:1:length(t)
     %% 計算姿態、位置
+    dphi(i+1) = dphi(i) + ddphi(i)*dt;
     dtheta(i+1) = dtheta(i) + ddphi(i)*dt;
     dpsi(i+1) = dpsi(i) + ddpsi(i)*dt;
-    dphi(i+1) = dphi(i) + ddphi(i)*dt;
 
+    phi(i+1) = phi(i) + dphi(i)*dt;
     theta(i+1) = theta(i) + dphi(i)*dt;
     psi(i+1) = psi(i) + dpsi(i)*dt;
-    phi(i+1) = phi(i) + dphi(i)*dt;
 
     ddphi(i+1) = dtheta(i)*dpsi(i)*(Iy-Iz)/Ix  + L/Ix*u2;
     ddtheta(i+1) = dphi(i)*dpsi(i)*(Iz-Ix)/Iy  + L/Iy*u3;
     ddpsi(i+1) = dphi(i)*dtheta(i)*(Ix-Iy)/Iz  + 1/Iz*u4;
 
-    a(1,i+1) = -( sin(phi(i))*sin(theta(i))*cos(psi(i)) + sin(phi(i))*sin(psi(i)) ) *u1/m;
-    a(2,i+1) = -( cos(phi(i))*sin(theta(i))*cos(psi(i)) - sin(phi(i))*sin(psi(i)) ) *u1/m;
-    a(3,i+1) = (cos(phi(i))*cos(theta(i))) *u1/m - g;
+    a(1,i+1) = -( cos(phi(i))*sin(theta(i))*cos(psi(i)) + sin(phi(i))*sin(psi(i)) ) *u1/m;
+     a(3,i+1) = (cos(phi(i))*cos(theta(i))) *u1/m - g;
 
     v(1:3,i+1) = v(1:3,i) + a(1:3,i)*dt;
     p(1:3,i+1) = p(1:3,i) + v(1:3,i)*dt;
+    
+    %%
+    dphi(i+1) = pi*sin(i/10);
+    dtheta(i+1) = pi*cos(i/10);
+    dpsi(i+1) = 0;
 end
 t(length(t)+1) = Time+dt;
 
