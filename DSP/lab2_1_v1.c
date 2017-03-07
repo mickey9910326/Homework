@@ -69,13 +69,13 @@ void school_print(type_school* school_p) {
         printf("  Teacher : ");
         for (j = 0; j < class_p->teacher_num ; j++) {
             type_man* man_p = &(class_p->teacher[j]);
-            printf("%10s", man_p->name);
+            printf("%8s", man_p->name);
         }
         printf("\n");
         printf("  Student : ");
         for (j = 0; j < class_p->student_num ; j++) {
             type_man* man_p = &(class_p->student[j]);
-            printf("%10s", man_p->name);
+            printf("%8s", man_p->name);
         }
         printf("\n");
     }

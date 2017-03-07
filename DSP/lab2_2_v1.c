@@ -1,31 +1,31 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <inttypes.h>
 #include <string.h>
 
 #define NAME_LENGTH 20
 #define CLASS_MAX_STUDENT 3
 #define CLASS_MAX_TEACHER 2
 
-#define stu1 {"Jobs"  ,"0912345678",2,15}
-#define stu2 {"Steve" ,"0912345678",2,2}
-#define stu3 {"Nig"   ,"0912345678",2,3}
-#define stu4 {"Bernie","0912345678",2,8}
+#define stu1 {"st1" ,"0912345678",2,0}
+#define stu2 {"st2" ,"0912345678",2,0}
+#define stu3 {"st3" ,"0912345678",2,0}
+#define stu4 {"st4" ,"0912345678",2,0}
 
-#define te1 {"T1","0912345678",1,9}
-#define te2 {"T2","0912345678",1,2}
-#define te3 {"T3","0912345678",1,4}
-#define te4 {"T4","0912345678",1,8}
+#define te1 {"T1","0912345678",1,0}
+#define te2 {"T2","0912345678",1,0}
+#define te3 {"T3","0912345678",1,0}
+#define te4 {"T4","0912345678",1,0}
 
-#define lt {"T4","0912345678",1,8}
+#define lt {"LT","0912345678",1,8}
 
-#define c1 {"English"  ,3,1,{stu1,stu2,stu3},{te1}}
-#define c2 {"Math"     ,2,1,{stu1,stu3}     ,{te2}}
-#define c3 {"Physical" ,2,1,{stu1,stu4}     ,{te3}}
-#define c4 {"Chemistry",1,1,{stu1}          ,{te1}}
+#define MAN_INI {stu1,stu2,stu3,stu4,te1,te2,te3,te4,lt}
 
-#define SCHOOL_INFO {"Tresh",4,4,{c1,c2,c3,c4},lt}
+#define c1 {"English"  ,0,0,{},{}}
+#define c2 {"Math"     ,0,0,{},{}}
+#define c3 {"Physical" ,0,0,{},{}}
+#define c4 {"Chemistry",0,0,{},{}}
 
+#define SCHOOL_INFO {"Tresh",4,0,{c1,c2,c3,c4}}
 
 typedef struct man {
     char name[NAME_LENGTH];
@@ -38,8 +38,8 @@ typedef struct class {
     char name[NAME_LENGTH];
     int student_num; // maxinum is 4
     int teacher_num; // maxinum is 4
-    type_man student[CLASS_MAX_STUDENT];
-    type_man teacher[CLASS_MAX_TEACHER];
+    type_man* student_p[CLASS_MAX_STUDENT];
+    type_man* teacher_p[CLASS_MAX_TEACHER];
 } type_class;
 
 typedef struct school {
@@ -47,127 +47,78 @@ typedef struct school {
     int class_num;
     int student_num;
     type_class class[4];
-    type_man head_teacher;
+    type_man* head_teacher_p;
 } type_school;
 
+type_man man_arr[9] = MAN_INI;
+
 void school_init(type_school* school_p) {
-    char name[NAME_LENGTH];
-    char phone[10];
-    int participate;
-    int i;
+    int i,j;
+    int identity;
+    int input;
 
-    printf("Input school name:");
-    scanf("%s",name);
-    strcpy(school_p->name,name);
+    for (i = 0; i < 9; i++) {
+        type_man* man_p = &man_arr[i];
+        printf("name: %s\n", man_p->name);
+        printf("input identity :");
+        scanf("%d", &identity);
 
-    strcpy(school_p->class[0].name, "English");
-    strcpy(school_p->class[1].name, "Math");
-    strcpy(school_p->class[2].name, "Physical");
-    strcpy(school_p->class[3].name, "Chemistry");
-
-    int break_falg;
-
-    /* TODO
-    * use the same man in different class
-    * or see as different man in different class
-    */
-    while ( break_falg ) {
-        printf("ADD teacher? (1 continue 0 stop):");
-        scanf("%d",&break_falg);
-        if (!break_falg) { break; }
-        printf("Input teacher name:");
-        scanf("%s",name);
-        printf("Input teacher phone:");
-        scanf("%s",phone);
-        printf("Input teacher participate:");
-        scanf("%d" ,&participate);
-
-        for (i = 0; i < 4; i++) {
-            if (participate & 0x01) {
-                type_class* class_p = &(school_p->class[i]);
-                if ( class_p->teacher_num==CLASS_MAX_TEACHER ){
-                    participate = participate>>1;
-                    continue;
-                    // TODO give a new participate
-                }
-                type_man* man = &(class_p->teacher[class_p->teacher_num]);
-                strcpy(man->name,name);
-                strcpy(man->phone,phone);
-                man->participate = participate;
-                man->identity = 1;
-                class_p->teacher_num++;
+        for (j = 0; j < 4; j++) {
+            type_class* class_p = &(school_p->class[j]);
+            printf("is part in %s? ", class_p->name);
+            scanf("%d", &input);
+            man_p->participate |= input<<j;
+            if(input)
+            switch (identity) {
+                case 1:
+                    if (class_p->teacher_num != CLASS_MAX_TEACHER) {
+                        class_p->teacher_p[class_p->teacher_num] = man_p;
+                        class_p->teacher_num++;
+                    }
+                    break;
+                case 2:
+                    if (class_p->student_num != CLASS_MAX_STUDENT) {
+                        class_p->student_p[class_p->student_num] = man_p;
+                        class_p->student_num++;
+                    }
+                    break;
             }
-            participate = participate>>1;
         }
-    }
-    break_falg = 1;
-    while ( break_falg ) {
-        printf("ADD stedunt? (1 continue 0 stop):");
-        scanf("%d",&break_falg);
-        if (!break_falg) { break; }
-        printf("Input student name:");
-        scanf("%s",name);
-        printf("Input student phone:");
-        scanf("%s",phone);
-        printf("Input student participate:");
-        scanf("%d" ,&participate);
-
-        school_p->student_num++;
-
-        for (i = 0; i < 4; i++) {
-            printf("OA");
-            if (participate & 0x01) {
-                type_class* class_p = &(school_p->class[i]);
-                if ( class_p->student_num==CLASS_MAX_STUDENT ){
-                    participate = participate>>1;
-                    continue;
-                    // TODO give a new participate
-                }
-                type_man* man = &(class_p->student[class_p->student_num]);
-                strcpy(man->name,name);
-                strcpy(man->phone,phone);
-                man->participate = participate;
-                man->identity = 2;
-                class_p->student_num++;
-            }
-            participate = participate>>1;
+        if (identity==2) {
+            school_p->student_num++;
         }
-        printf("OAO");
+        if ( identity == 0) {
+            school_p->head_teacher_p = man_p;
+        }
     }
 }
 
 void school_print(type_school* school_p) {
     printf("----%s----\n", school_p->name);
-    printf("lead teacher: %s\n", school_p->head_teacher.name);
+    printf("lead teacher: %s\n", school_p->head_teacher_p->name);
     printf("student_num: %d\n", school_p->student_num);
     int i,j;
     for (i = 0; i < school_p->class_num ; i++) {
-        type_class* class_p = &(school_p->class[i]);
+        type_class* class_p = &school_p->class[i];
         printf("Class name: %s \n", class_p->name);
         printf("  Teacher : ");
         for (j = 0; j < class_p->teacher_num ; j++) {
-            type_man* man_p = &(class_p->teacher[j]);
-            printf("%10s", man_p->name);
+            type_man* teacher_p = class_p->teacher_p[j];
+            printf("%10s", teacher_p->name);
         }
         printf("\n");
         printf("  Student : ");
         for (j = 0; j < class_p->student_num ; j++) {
-            type_man* man_p = &(class_p->student[j]);
-            printf("%10s", man_p->name);
+            type_man* student_p = class_p->student_p[j];
+            printf("%10s", student_p->name);
         }
         printf("\n");
     }
 }
 
 int main(int argc, char const *argv[]) {
-    type_school myschool = SCHOOL_INFO;
-
-    // school_init(&myschool);
-    school_print(&myschool);
-    type_man s = stu1;
-    // type_class c = {"MATH",0,0,{{"Jobs","0912345678",1,1},{"Jobs","0912345678",1,1}},};
-    type_class c = {"MATH",2,2,{stu1,stu2},{te1}};
-    printf("%s\n", c.student[0].name);
-    // myschool.class[0].student[0] = stu1;
+    type_school school = SCHOOL_INFO;
+    school_init(&school);
+    school_print(&school);
     return 0;
 }
