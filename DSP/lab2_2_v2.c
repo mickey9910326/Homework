@@ -48,7 +48,7 @@ int main(int argc, char const *argv[]) {
     school_add_class(myschool,"English");
     school_add_class(myschool,"Math");
     school_add_class(myschool,"Physical");
-    school_add_class(myschool,"Chemistr");
+    school_add_class(myschool,"Chemistry");
 
     school_add_lead_teacher(myschool,"TTT","1234567890");
 
