@@ -6,9 +6,10 @@ V0 = 30;
 Lambda = 0.6;
 dt = 0.1;
 t  = [0:dt:20];
-n  = randi([0 100],1,length(t)) *0.001;
+n  =  wgn(1,length(t),0)*0.05;
 
 figure(1)
+clf;
 Vt_true = A * exp( -1*Lambda*t ) .* cos(W*t+PHI) + V0 ;
 plot(t,Vt_true);
 hold on;
@@ -89,9 +90,13 @@ a = exp(theta_hat(1))
 lambda = theta_hat(2)
 
 figure(3)
+clf;
 plot(t,Vt);
 hold on;
-plot(t,Vt_true,'r')
+plot(t,Vt_true,'r');
 hold on;
 vt = a * exp( -1*lambda*t ) .* cos(w*t+phi) + v0 ;
 plot(t,vt,'g');
+
+
+legend('singal','orginal','outcome')
