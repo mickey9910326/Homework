@@ -2,16 +2,17 @@ clear;clc;
 A  = 2;
 PHI =
 V0 = 30;
-Lambda = 0.87;
+LAMBDA = 0.87;
 t  = [0:0.01:20];
-dt = 0.01;
-n  = randi([0 100],1,length(t)) *dt;
+n  = randi([0 100],1,length(t)) *0.01;
 
-Vt = A * exp( -1*Lambda*t ) + cos(W*t+PHI);
+Vt = A * exp( -1*LAMBDA*t ) * cos(W*t+PHI) + V0 + n;
 
 plot(t,Vt)
 
 point = [1;100;20;130;120;140;150;200];
+
+% 
 
 for i=1:length(point)
     Y(i,1) = log(Vt(point(i)));
