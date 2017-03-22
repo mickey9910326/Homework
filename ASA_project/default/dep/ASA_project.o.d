@@ -15,7 +15,9 @@ ASA_project.o: ../ASA_project.c ../ASA_Lib.h \
   c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stdarg.h \
   c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stddef.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/util\delay.h \
-  c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h
+  c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h \
+  ../ASA_SPI.h ../ASA_DIO.h \
+  c:/winavr-20100110/lib/gcc/../../avr/include/assert.h
 
 ../ASA_Lib.h:
 
@@ -52,3 +54,9 @@ c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stddef.h:
 c:/winavr-20100110/lib/gcc/../../avr/include/util\delay.h:
 
 c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h:
+
+../ASA_SPI.h:
+
+../ASA_DIO.h:
+
+c:/winavr-20100110/lib/gcc/../../avr/include/assert.h:

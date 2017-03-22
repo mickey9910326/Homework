@@ -117,8 +117,22 @@ void school_print(type_school* school_p) {
 }
 
 int main(int argc, char const *argv[]) {
+<<<<<<< HEAD
     type_school school = SCHOOL_INFO;
     school_init(&school);
     school_print(&school);
+=======
+    type_school myschool = SCHOOL_INFO;
+
+    // school_init(&myschool);
+    school_print(&myschool);
+
+    // type_class c = {"MATH",0,0,{{"Jobs","0912345678",1,1},{"Jobs","0912345678",1,1}},};
+    type_class c = {"MATH",2,2,{stu1,stu2},{te1}};
+    printf("%s\n", c.student[0].name);
+    // myschool.class[0].student[0] = stu1;
+
+
+>>>>>>> origin/master
     return 0;
 }

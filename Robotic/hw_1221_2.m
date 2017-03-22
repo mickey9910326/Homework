@@ -1,11 +1,11 @@
 %% Jacobians: Velocities and Static Forces
 % Get a linear velocity to describe a linear motion of a point.
-% date:2016/12/22 
+% date:2016/12/22
 %%
 clear all
 clc
 %% Define T and get R and P
-syms z4 dtheta1 dtheta2 dtheta3 
+syms z4 dtheta1 dtheta2 dtheta3
 
 % T(i) = T_(i-1)_i
 T(1:4,1:4,1:4) = sym(0);
@@ -72,7 +72,6 @@ dtheta2 = vpa(s.dtheta2)
 W1 = subs(W(:,2))
 W2 = subs(W(:,3))
 
-fprintf('W3¤£¼vÅTPÂI³t«×¡A¦ì¸m')
+fprintf('W3¤£¼vñPÂI³t«×¡A¦ì¸m')
 
 V4 = vpa(subs(V(:,5)))
-

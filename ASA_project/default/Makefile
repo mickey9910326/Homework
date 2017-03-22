@@ -15,8 +15,8 @@ COMMON = -mmcu=$(MCU)
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
-CFLAGS += -Wall -gdwarf-2 -std=gnu99    -DF_CPU=11059200UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
-CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d 
+CFLAGS += -Wall -gdwarf-2 -std=gnu99      -DF_CPU=11059200UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
+CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d
 
 ## Assembly specific flags
 ASMFLAGS = $(COMMON)
@@ -25,7 +25,7 @@ ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS +=  -Wl,-Map=ASA_project.map
+LDFLAGS += -Wl,-u,vfprintf  -Wl,-u,vfscanf -Wl,-Map=ASA_project.map
 
 
 ## Intel Hex file production flags
@@ -36,11 +36,14 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
+## Libraries
+LIBS = -lm -lprintf_flt -lscanf_flt
+
 ## Objects that must be built in order to link
-OBJECTS = ASA_project.o 
+OBJECTS = ASA_project.o ASA_DIO.o ASA_SPI.o
 
 ## Objects explicitly added by the user
-LINKONLYOBJECTS = "D:\Homework\ASA_project\ASA_Lib.o" 
+LINKONLYOBJECTS = "D:\Homework\ASA_project\ASA_Lib.o"
 
 ## Build
 all: $(TARGET) ASA_project.hex ASA_project.eep ASA_project.lss size
@@ -48,6 +51,13 @@ all: $(TARGET) ASA_project.hex ASA_project.eep ASA_project.lss size
 ## Compile
 ASA_project.o: ../ASA_project.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
+ASA_DIO.o: ../ASA_DIO.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
+ASA_SPI.o: ../ASA_SPI.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
 
 ##Link
 $(TARGET): $(OBJECTS)
@@ -74,4 +84,3 @@ clean:
 
 ## Other dependencies
 -include $(shell mkdir dep 2>/dev/null) $(wildcard dep/*)
-
