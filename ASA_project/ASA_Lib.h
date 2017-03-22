@@ -57,7 +57,7 @@ char ASA_ACC00_get(char ASA_ID, char LSByte, char Bytes, void *Data_p);
 /**ADC00**/
 char ASA_ADC00_set(char ASA_ID, char LSByte, char Mask, char shift, char Data);
 char ASA_ADC00_get(char ASA_ID, char LSByte, char Bytes, void *Data_p);
- 
+
 /**DAC00**/
 char ASA_DAC00_set(char ASA_ID, char LSByte, char Mask, char shift, char Data);
 char ASA_DAC00_put(char ASA_ID, char LSByte, char Bytes, void *Data_p);

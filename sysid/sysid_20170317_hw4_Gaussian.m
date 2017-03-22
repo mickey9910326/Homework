@@ -1,9 +1,10 @@
+%%
 clear;clc;
 A  = 2;
 PHI = 1*pi;
 W = 1*pi;
 V0 = 30;
-Lambda = 0.6;
+Lambda = 0.3;
 dt = 0.1;
 t  = [0:dt:20];
 n  =  wgn(1,length(t),0)*0.05;

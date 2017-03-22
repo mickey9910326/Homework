@@ -164,10 +164,12 @@ int main(int argc, char const *argv[]) {
 
     // school_init(&myschool);
     school_print(&myschool);
-    type_man s = stu1;
+
     // type_class c = {"MATH",0,0,{{"Jobs","0912345678",1,1},{"Jobs","0912345678",1,1}},};
     type_class c = {"MATH",2,2,{stu1,stu2},{te1}};
     printf("%s\n", c.student[0].name);
     // myschool.class[0].student[0] = stu1;
+
+
     return 0;
 }
