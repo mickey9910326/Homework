@@ -8,7 +8,7 @@ int main(void) {
     ASA_TMP121_ini();
     while (1){
 
-        ASA_TMP121_get(7,100,2,&TEM);
+        ASA_TMP121_get(1,100,2,&TEM);
         printf("TEMP = %f\n",TEM);
     }
     return 0;

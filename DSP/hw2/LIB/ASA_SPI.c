@@ -23,10 +23,10 @@ char M128_SPI_set(char LSByte, char Mask,  char shift,  char Data) {
 
 	//spi pins on port b MOSI SCK,SS outputs
 	const char MSTR_DDR = ((1<<DDB2)|(1<<DDB1)|(1<<DDB0));
-	M128_DIO_set(DDR_SPI_num,15,0, MSTR_DDR);
+	M128_DIO_set(200+DDR_SPI_num,15,0, MSTR_DDR);
 
 	//set CS pin (PB5) output 0
-	M128_DIO_set(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
+	M128_DIO_set(200+CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
 	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
 
 	if ( LSByte==200 ) {
@@ -50,7 +50,7 @@ char M128_SPI_put(char NoAdd, char Addr, char Bytes, void *Data_p) {
 	int i;
 	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
 	if ( !NoAdd ) {
-		// TODO
+		M128_SPI_swap(Addr);
 	}
 
 	for (i = 0; i < Bytes; i++) {
@@ -70,7 +70,7 @@ char M128_SPI_get(char NoAdd, char Addr, char Bytes, void *Data_p) {
 	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
 
 	if ( !NoAdd ) {
-		// TODO
+		M128_SPI_swap(Addr);
 	}
 	for (i = 0; i < Bytes; i++) {
 		 *((char*)Data_p +i) = M128_SPI_swap( *((char*)Data_p +i) );
