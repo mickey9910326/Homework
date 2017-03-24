@@ -23,10 +23,5 @@ char M128_SPI_get(char NoAdd, char Addr, char Bytes, void *Data_p);
 #define CS_PORT_SHT CS_pin
 // CS : PF5
 
-#define ADDR_PORT_num 1
-#define ADDR_PORT_msk (1<<5)|(1<<6)|(1<<7)
-#define ADDR_PORT_sht 5
-// SPI ADDR use PORTB bit 5,6,7 as id 0~7
-// use DIO_put to set ADDR
 
 #endif
