@@ -4,8 +4,6 @@
 #include <avr/io.h>
 #include "ASA_DIO.h"
 
-#include "ASA_LIB.h"
-
 char M128_SPI_swap(char cData);
 char SPI_Transmit(char cData);
 char M128_SPI_set(char LSByte, char Mask,  char shift,  char Data);

@@ -53,11 +53,11 @@ char M128_SPI_put(char NoAdd, char Addr, char Bytes, void *Data_p) {
 
 	if ( !NoAdd ) {
 		M128_SPI_swap(Addr);
-		if ( SPSR&(1<<CPOL) ) { printf("wrong"); }
+		if ( SPSR&(1<<CPOL) ) { /* TODO */ }
 	}
 	for (i = 0; i < Bytes; i++) {
 		 *((char*)Data_p +i) = M128_SPI_swap( *((char*)Data_p +i) );
-		 if ( SPSR&(1<<CPOL) ) { printf("wrong"); }
+		 if ( SPSR&(1<<CPOL) ) { /* TODO */ }
 	}
 	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
 
