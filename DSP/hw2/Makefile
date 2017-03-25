@@ -76,4 +76,4 @@ size: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS) *.elf *.hex /hex/*
+	-rm -rf $(OBJECTS) *.elf *.hex ./hex/*

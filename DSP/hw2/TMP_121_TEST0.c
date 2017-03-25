@@ -11,7 +11,7 @@ int main(void) {
     char ADDR_MSK = (1<<5)|(1<<6)|(1<<7);
     char ADDR_SHT = 5;
     char ADDR = 7;
-    M128_DIO_set(1,ADDR_MSK,ADDR_SHT,ADDR);
+    M128_DIO_set(201,ADDR_MSK,ADDR_SHT,ADDR);
     M128_DIO_fpt(1,ADDR_MSK,ADDR_SHT,ADDR);
     M128_SPI_set(200,0xFF,0,(1<<SPE)|(1<<MSTR));
     while (1){
