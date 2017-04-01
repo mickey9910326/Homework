@@ -11,5 +11,6 @@ void ASA_TMP121_get(char ASA_ID, char LSByte, char Bytes, void *Data_p) {
     _delay_ms(250);          //轉換時間長，CS腳須維持 250ms才能完成一次轉換
     M128_SPI_get(1,0,Bytes,data);
     *(double*)Data_p = (double)((data[0]<<5) + (data[1]>>3)) *0.0625; //translate 2byte data to temptature
+    // FIXME 未處理負號問題
     return ;
 }

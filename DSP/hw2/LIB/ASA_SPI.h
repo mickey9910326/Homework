@@ -11,7 +11,7 @@ char M128_SPI_put(char NoAdd, char Addr, char Bytes, void *Data_p);
 char M128_SPI_get(char NoAdd, char Addr, char Bytes, void *Data_p);
 
 #define DDR_SPI_num 1
-#define DD_MISO DDB1
+#define DD_MISO DDB3
 #define DD_MOSI DDB2
 #define DD_SCK  DDB1
 #define DD_SS   DDB0
@@ -21,7 +21,6 @@ char M128_SPI_get(char NoAdd, char Addr, char Bytes, void *Data_p);
 #define CS_PORT_NUM 5
 #define CS_PORT_MSK (1<<CS_pin)
 #define CS_PORT_SHT CS_pin
-// CS : PF5
-
+// CS : PF4
 
 #endif

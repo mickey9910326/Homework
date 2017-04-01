@@ -26,7 +26,7 @@ char M128_SPI_set(char LSByte, char Mask,  char shift,  char Data) {
 	M128_DIO_set(200+DDR_SPI_num,15,0, 0);
 	M128_DIO_set(200+DDR_SPI_num,15,0, MSTR_DDR);
 
-	//set CS pin (PB5) output 0
+	//set CS pin (PF4) output 0
 	M128_DIO_set(200+CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
 	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
 
