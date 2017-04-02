@@ -10,7 +10,7 @@
 void ASA_MAX7219_ini() {
     // set ADDR pins (PB5~7) as output
     M128_DIO_set(200+ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,7);
-    M128_SPI_set(200,0xFF,0,(1<<SPE)|(1<<MSTR)|(1<<SPR1)|(1<<SPR0));
+    M128_SPI_set(200,0xFF,0,(1<<SPE)|(1<<MSTR)|(1<<SPR1));
 }
 
 char ASA_MAX7219_set(char ASA_ID, char LSByte, char Blocks, char Mask, char shift, char *Data_p) {
@@ -37,7 +37,7 @@ char ASA_MAX7219_set(char ASA_ID, char LSByte, char Blocks, char Mask, char shif
             break;
         case 203 :
             // TODO set shutdown
-            if ( data > 7 ) { return 3; }
+            if ( data > 1 ) { return 3; }
             addr = MAX7219_ADDR_POWER;
             break;
         case 204 :
@@ -57,7 +57,8 @@ char ASA_MAX7219_set(char ASA_ID, char LSByte, char Blocks, char Mask, char shif
 }
 
 char ASA_MAX7219_put(char ASA_ID, char LSByte, char Blocks, void *Data_p) {
-    if(LSByte>7) { return 1; }
+    if(ASA_ID>7) { return 1; }
+    if(LSByte>8) { return 2; }
     char i;
     char addr = LSByte;
     char bytes = 1;

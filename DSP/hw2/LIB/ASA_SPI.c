@@ -45,7 +45,6 @@ char M128_SPI_set(char LSByte, char Mask,  char shift,  char Data) {
 
 char M128_SPI_put(char NoAdd, char Addr, char Bytes, void *Data_p) {
 	if ( NoAdd > 2 ) { return 1; }
-	if ( Addr  > 7 ) { return 2; }
 	if ( Bytes < 0 ) { return 3; }
 
 	int i;
@@ -66,7 +65,6 @@ char M128_SPI_put(char NoAdd, char Addr, char Bytes, void *Data_p) {
 
 char M128_SPI_get(char NoAdd, char Addr, char Bytes, void *Data_p) {
 	if ( NoAdd > 2 ) { return 1; }
-	if ( Addr  > 7 ) { return 2; }
 	if ( Bytes < 0 ) { return 3; }
 
 	int i;

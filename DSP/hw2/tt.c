@@ -58,7 +58,7 @@ float T=0;
 int main()
 {
 	ASA_M128_set();
-	PORTB = 0b01110111;
+	PORTB = 0b00100111;
 	SPI_Init();
 
 
