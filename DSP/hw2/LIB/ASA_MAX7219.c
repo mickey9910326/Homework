@@ -20,23 +20,19 @@ char ASA_MAX7219_set(char ASA_ID, char LSByte, char Blocks, char Mask, char shif
     char data  = *Data_p;
 
     switch (LSByte) {
-        case 200 :
-            // TODO set decode
+        case 200 : //  set decode
             if ( data != 1 && data != 0xFF) { return 3; }
             addr = MAX7219_ADDR_DECODE;
             break;
-        case 201 :
-            // TODO set intensity
+        case 201 : // set intensity
             if ( data > 15 ) { return 3; }
             addr = MAX7219_ADDR_INTENSITY;
             break;
-        case 202 :
-            // TODO set scan limit
+        case 202 : // set scan limit
             if ( data > 15 ) { return 3; }
             addr = MAX7219_ADDR_SCAN_LIMIT;
             break;
-        case 203 :
-            // TODO set shutdown
+        case 203 : // set shutdown
             if ( data > 1 ) { return 3; }
             addr = MAX7219_ADDR_POWER;
             break;

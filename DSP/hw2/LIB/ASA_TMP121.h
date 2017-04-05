@@ -7,6 +7,6 @@
 #include <util\delay.h>
 
 void ASA_TMP121_ini();
-void ASA_TMP121_get(char ASA_ID, char LSByte, char Bytes, void *Data_p);
+char ASA_TMP121_get(char ASA_ID, char LSByte, char Bytes, void *Data_p);
 
 #endif

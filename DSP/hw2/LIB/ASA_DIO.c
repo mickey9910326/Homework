@@ -1,12 +1,7 @@
 #include "ASA_DIO.h"
 
-char default_ddra = 0b00000000;
-char default_ddrb = 0b00000000;
-char default_ddrc = 0b00000000;
-char default_ddrd = 0b00000000;
-
 char M128_DIO_set(char LSByte, char Mask, char shift, char Data) {
-    if(LSByte<200||LSByte>207)
+    if(LSByte<200||LSByte>206)
         return 1;
     else if(shift>7)
         return 2;
@@ -72,7 +67,7 @@ char M128_DIO_fgt(char LSByte, char Mask, char shift, char *Data) {
         case 106: PORT = &PORTG; DDR = &DDRG; PIN = &PING; break;
         default: return 1;
     }
-    *Data=(*PIN&(~Mask))>>shift;
+    *Data=(*PIN&(Mask))>>shift;
     // FIXME (~Mask) => Mask
     return 0;
 }
