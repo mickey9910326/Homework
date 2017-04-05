@@ -1,4 +1,3 @@
-// DEMO serial MAX7219 TEST
 #include "LIB\ASA_Lib.h"
 #include "LIB\ASA_MAX7219.h"
 
@@ -30,31 +29,16 @@ int main() {
     0b11111111,
     0b00000000
     };
-    char matrix3[8][2]={
-    0b11111111,0b00000000,
-    0b01000000,0b11111111,
-    0b00100000,0b00010000,
-    0b00010000,0b00010000,
-    0b00001000,0b00010000,
-    0b00000100,0b00010000,
-    0b00000010,0b11111111,
-    0b11111111,0b00000000
-    };
 
     ASA_MAX7219_ini();
     Data=0,LSByte=204;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 關閉 DISPLAY_TEST MODE
     Data=7,LSByte=202;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 顯示7位數
     Data=0,LSByte=201;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 亮度0(最低)
     Data=1,LSByte=203;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 關閉 SHOTDOWN模式
-    Data=1,LSByte=203;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 關閉 SHOTDOWN模式
     _delay_ms(200);
     for(i=1;i<=8;i++){
-        ASA_MAX7219_put2(1,i,2,1,&matrix[i-1]);
+        ASA_MAX7219_put(1,i,1,&matrix2[i-1]);
     }
-    for(i=1;i<=8;i++){
-        ASA_MAX7219_put2(1,i,2,2,&matrix2[i-1]);
-    }
-
     while (1) {
         printf("\nAddr = ");
         scanf("%d", &input);
@@ -66,10 +50,10 @@ int main() {
         printf("Data=%02x\n",Data );
 
         M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
+        M128_SPI_swap(0);
+        M128_SPI_swap(0);
         M128_SPI_swap(Addr);
         M128_SPI_swap(Data);
-        M128_SPI_swap(0);
-        M128_SPI_swap(0);
         scanf("%d", &input);
     	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
     }

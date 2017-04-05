@@ -68,3 +68,24 @@ char ASA_MAX7219_put(char ASA_ID, char LSByte, char Blocks, void *Data_p) {
     }
     return 0;
 }
+
+char ASA_MAX7219_put2(char ASA_ID, char LSByte, char Blocks,char Num, void *Data_p) {
+    if(ASA_ID>7) { return 1; }
+    if(LSByte>8) { return 2; }
+    char i;
+    char addr = LSByte;
+    char bytes = 1;
+    M128_DIO_fpt(ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,ASA_ID);
+    M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
+    for (i = 0; i < Blocks; i++) {
+        if (i==Num-1) {
+            M128_SPI_swap(addr);
+            M128_SPI_swap(*(char*)Data_p);
+        } else {
+            M128_SPI_swap(0);
+            M128_SPI_swap(0);
+        }
+    }
+    M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
+    return 0;
+}
