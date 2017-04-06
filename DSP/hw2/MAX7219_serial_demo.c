@@ -10,7 +10,7 @@ int main() {
     char Data,Addr,LSByte;
     int input;
 
-    char matrix[8]={
+    char matrix1[8]={
     0b01010101,
     0b00000000,
     0b11111111,
@@ -39,29 +39,12 @@ int main() {
     Data=1,LSByte=203;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 關閉 SHOTDOWN模式
     _delay_ms(200);
     for(i=1;i<=8;i++){
-        ASA_MAX7219_put2(1,i,2,1,&matrix[i-1]);
-    }
-    for(i=1;i<=8;i++){
+        ASA_MAX7219_put2(1,i,2,1,&matrix1[i-1]);
         ASA_MAX7219_put2(1,i,2,2,&matrix2[i-1]);
     }
 
     while (1) {
-        printf("\nAddr = ");
-        scanf("%d", &input);
-        Addr = (char)input;
-        printf("\nData = ");
-        scanf("%d", &input);
-        Data = (char)input;
-        printf("Addr=%02x  ",Addr );
-        printf("Data=%02x\n",Data );
-
-        M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
-        M128_SPI_swap(Addr);
-        M128_SPI_swap(Data);
-        M128_SPI_swap(0);
-        M128_SPI_swap(0);
-        scanf("%d", &input);
-    	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
+        printf("OAO\n");
     }
     return 0;
 }

@@ -1,4 +1,7 @@
+#include <avr/io.h>
+#include "ASA_general.h"
 #include "ASA_DIO.h"
+#include "bit_op.h"
 
 char M128_DIO_set(char LSByte, char Mask, char shift, char Data) {
     if(LSByte<200||LSByte>206)
@@ -6,7 +9,6 @@ char M128_DIO_set(char LSByte, char Mask, char shift, char Data) {
     else if(shift>7)
         return 2;
 
-    Data=(Data<<shift);
     volatile uint8_t *PORT;
     volatile uint8_t *DDR;
     volatile uint8_t *PIN;
@@ -20,7 +22,9 @@ char M128_DIO_set(char LSByte, char Mask, char shift, char Data) {
         case 206: PORT = &PORTG; DDR = &DDRG; PIN = &PING; break;
         default: return 1;
     }
-    *DDR |= (Data&Mask);
+    bits_put(*DDR,Data,Mask,shift);
+    // Data=(Data<<shift);
+    // *DDR = (*DDR&(~Mask))|(Data&Mask);
     return 0;
 }
 
@@ -30,7 +34,6 @@ char M128_DIO_fpt(char LSByte, char Mask, char shift, char Data) {
     else if(shift>7)
         return 2;
 
-    Data=(Data<<shift);
     volatile uint8_t *PORT;
     volatile uint8_t *DDR;
     volatile uint8_t *PIN;
@@ -44,7 +47,9 @@ char M128_DIO_fpt(char LSByte, char Mask, char shift, char Data) {
         case 6: PORT = &PORTG; DDR = &DDRG; PIN = &PING; break;
         default: return 1;
     }
-    *PORT=(*PORT&~Mask)|(Data&Mask);
+    bits_put(*PORT,Data,Mask,shift);
+    // Data=(Data<<shift);
+    // *PORT=(*PORT&~Mask)|(Data&Mask);
     return 0;
 }
 
@@ -53,7 +58,7 @@ char M128_DIO_fgt(char LSByte, char Mask, char shift, char *Data) {
         return 1;
     else if(shift>7)
         return 2;
-    // BUG set DDR if DDR bit is 1 ?
+
     volatile uint8_t *PORT;
     volatile uint8_t *DDR;
     volatile uint8_t *PIN;
@@ -67,7 +72,7 @@ char M128_DIO_fgt(char LSByte, char Mask, char shift, char *Data) {
         case 106: PORT = &PORTG; DDR = &DDRG; PIN = &PING; break;
         default: return 1;
     }
-    *Data=(*PIN&(Mask))>>shift;
-    // FIXME (~Mask) => Mask
+    *Data = bits_get(*PIN,Mask,shift);
+    // *Data=(*PIN&(Mask))>>shift;
     return 0;
 }

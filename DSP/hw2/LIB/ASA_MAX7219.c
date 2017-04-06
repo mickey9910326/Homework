@@ -1,3 +1,7 @@
+#include <avr/io.h>
+#include "ASA_DIO.h"
+#include "ASA_SPI.h"
+#include "ASA_general.h"
 #include "ASA_MAX7219.h"
 
 #define MAX7219_ADDR_DECODE       0x09
@@ -55,12 +59,15 @@ char ASA_MAX7219_set(char ASA_ID, char LSByte, char Blocks, char Mask, char shif
 char ASA_MAX7219_put(char ASA_ID, char LSByte, char Blocks, void *Data_p) {
     if(ASA_ID>7) { return 1; }
     if(LSByte>8) { return 2; }
-    char i;
+    char i,check=0;
     char addr = LSByte;
     char bytes = 1;
     M128_DIO_fpt(ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,ASA_ID);
     for (i = 0; i < Blocks; i++) {
-        M128_SPI_put(0,addr,bytes,Data_p+i);
+        check = M128_SPI_put(0,addr,bytes,Data_p+i);
+    }
+    if (check) {
+        return 4; // WCOL SPI通訊相撞
     }
     return 0;
 }
