@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include "ASA_DIO.h"
 #include "ASA_SPI.h"
+#include "bit_op.h"
 #include "ASA_general.h"
 
 char M128_SPI_swap(char cData){
