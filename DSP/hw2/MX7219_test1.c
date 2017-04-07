@@ -1,6 +1,8 @@
 #include "LIB\ASA_LIB.h"
 #include "LIB\ASA_SPI.h"
 #include "LIB\ASA_TMP121.h"
+#include "LIB\ASA_DIO.h"
+#include "LIB\ASA_general.h"
 
 #define MAX7219_ADDR_DECODE       0x09
 #define MAX7219_ADDR_INTENSITY    0x0A

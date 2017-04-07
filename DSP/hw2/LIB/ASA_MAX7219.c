@@ -50,9 +50,11 @@ char ASA_MAX7219_set(char ASA_ID, char LSByte, char Blocks, char Mask, char shif
     }
     // start communication
     M128_DIO_fpt(ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,ASA_ID);
+    M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
     for (i = 0; i < Blocks; i++) {
         M128_SPI_put(0,addr,bytes,Data_p+i);
     }
+	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
     return 0;
 }
 
@@ -63,9 +65,11 @@ char ASA_MAX7219_put(char ASA_ID, char LSByte, char Blocks, void *Data_p) {
     char addr = LSByte;
     char bytes = 1;
     M128_DIO_fpt(ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,ASA_ID);
+    M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
     for (i = 0; i < Blocks; i++) {
         check = M128_SPI_put(0,addr,bytes,Data_p+i);
     }
+    M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
     if (check) {
         return 4; // WCOL SPI通訊相撞
     }

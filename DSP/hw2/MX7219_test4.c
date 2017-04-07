@@ -1,5 +1,7 @@
 #include "LIB\ASA_Lib.h"
+#include "LIB\ASA_SPI.h"
 #include "LIB\ASA_MAX7219.h"
+#include "LIB\ASA_general.h"
 
 int main() {
     ASA_M128_set();

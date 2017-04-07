@@ -1,5 +1,7 @@
 #include "LIB\ASA_Lib.h"
+#include "LIB\ASA_DIO.h"
 #include "LIB\ASA_MAX7219.h"
+#include "LIB\ASA_general.h"
 
 int main() {
     ASA_M128_set();
@@ -13,11 +15,10 @@ int main() {
         printf("\nAddr = ");
         scanf("%d", &input);
         Addr = (char)input;
-        printf("Addr=%02x\n",Addr );
         printf("\nData = ");
         scanf("%d", &input);
         Data = (char)input;
-        printf("Data=%02x\n",Addr );
+        printf("Addr=%02x,Data=%02x\n",Addr,Data);
 
         M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
     	M128_SPI_swap(Addr);

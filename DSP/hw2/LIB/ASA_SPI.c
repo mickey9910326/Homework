@@ -49,7 +49,6 @@ char M128_SPI_put(char NoAdd, char Addr, char Bytes, void *Data_p) {
 	if ( Bytes < 0 ) { return 3; }
 	char wrong = 0;
 	char i;
-	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
 
 	if ( !NoAdd ) {
 		M128_SPI_swap(Addr);
@@ -59,7 +58,6 @@ char M128_SPI_put(char NoAdd, char Addr, char Bytes, void *Data_p) {
 		 *((char*)Data_p +i) = M128_SPI_swap( *((char*)Data_p +i) );
 		 if ( SPSR&(1<<WCOL) ) { wrong = 4; }
 	}
-	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
 
 	return wrong;
 }
@@ -69,7 +67,6 @@ char M128_SPI_get(char NoAdd, char Addr, char Bytes, void *Data_p) {
 	if ( Bytes < 0 ) { return 3; }
 
 	int i;
-	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
 
 	if ( !NoAdd ) {
 		M128_SPI_swap(Addr);
@@ -77,7 +74,6 @@ char M128_SPI_get(char NoAdd, char Addr, char Bytes, void *Data_p) {
 	for (i = 0; i < Bytes; i++) {
 		 *((char*)Data_p +i) = M128_SPI_swap( *((char*)Data_p +i) );
 	}
-	M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
 
 	return 0;
 }

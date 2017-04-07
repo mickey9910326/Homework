@@ -21,10 +21,10 @@ int main() {
     };
 
     ASA_MAX7219_ini();
-    Data=1,LSByte=203;ASA_MAX7219_set(ASA_ID,LSByte,0,0xFF,0,&Data); // 關閉 SHOTDOWN模式
-    Data=0,LSByte=204;ASA_MAX7219_set(ASA_ID,LSByte,0,0xFF,0,&Data); // 關閉 DISPLAY_TEST MODE
-    Data=7,LSByte=202;ASA_MAX7219_set(ASA_ID,LSByte,0,0xFF,0,&Data); // 顯示7位數
-    Data=0,LSByte=201;ASA_MAX7219_set(ASA_ID,LSByte,0,0xFF,0,&Data); // 亮度0(最低)
+    Data=1,LSByte=203;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 關閉 SHOTDOWN模式
+    Data=0,LSByte=204;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 關閉 DISPLAY_TEST MODE
+    Data=7,LSByte=202;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 顯示7位數
+    Data=0,LSByte=201;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 亮度0(最低)
     _delay_ms(200);
     for(i=1;i<=8;i++){
         ASA_MAX7219_put(ASA_ID,i,0,&matrix[i-1]);

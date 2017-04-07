@@ -18,7 +18,10 @@ char ASA_TMP121_get(char ASA_ID, char LSByte, char Bytes, void *Data_p) {
     char data[2],check=0;
     M128_DIO_fpt(ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,ASA_ID);
     _delay_ms(250);
+    M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
     check = M128_SPI_get(1,0,Bytes,data);
+    M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
+    
     if ( (data[0]&0b10000000) == 1 ) { // 負號
         *(double*)Data_p = (double)(((~data[0])<<5) + ((~data[1])>>3)+1) *0.0625; //translate 2byte data to temptature
     } else {
