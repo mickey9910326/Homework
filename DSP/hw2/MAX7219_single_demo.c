@@ -10,15 +10,16 @@ int main() {
     int input;
 
     char matrix[8]={
-    0b11111111,
-    0b01000000,
-    0b00100000,
-    0b00010000,
-    0b00001000,
-    0b00000100,
-    0b00000010,
-    0b11111111
+    0b00111100,
+    0b01000010,
+    0b10100101,
+    0b10000001,
+    0b10100101,
+    0b10011001,
+    0b10000001,
+    0b01111110
     };
+
 
     ASA_MAX7219_ini();
     Data=1,LSByte=203;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 關閉 SHOTDOWN模式
@@ -27,7 +28,7 @@ int main() {
     Data=0,LSByte=201;ASA_MAX7219_set(ASA_ID,LSByte,1,0xFF,0,&Data); // 亮度0(最低)
     _delay_ms(200);
     for(i=1;i<=8;i++){
-        ASA_MAX7219_put(ASA_ID,i,0,&matrix[i-1]);
+        ASA_MAX7219_put(ASA_ID,i,1,&matrix[i-1]);
         _delay_ms(10);
     }
     while (1) {
