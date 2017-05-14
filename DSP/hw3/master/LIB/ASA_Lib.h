@@ -1,7 +1,7 @@
 /*===============ASA Series Library===============*/
 
 /*****ReleaseDate*****/
-//2015/12/1
+//2017/4/28
 
 /*****Feature*****/
 
@@ -13,6 +13,7 @@
 //ASA DAC00
 //ASA DIO00
 //ASA GR00
+//ASA JS00
 //ASA KB00
 //ASA PWM00
 //ASA PWM01
@@ -40,10 +41,24 @@
 char ASA_M128_set(void);
 char DIO_fpt(char LSByte, char Mask, char shift, char Data);
 char DIO_fgt(char LSByte, char Mask, char shift, char *Data_p);
-char TIM_set(void);
-char TIMISR_reg(void (*function)(void));
+char ISR_reg(char IRQ,void (*Fun_p)(void));
+char TIM_set(char LSByte, char Mask, char Shift, char Data);
+char EXT_set(char LSByte, char Mask, char Shift, char Data);
 char HMI_Transceiver_put(char Bytes, void *Data_p);
 char HMI_Transceiver_get(char Bytes, void *Data_p);
+char HMI_Structure_put(char *FormatString, char Bytes, void *Data_p);
+char HMI_Structure_get(char *FormatString, char Bytes, void *Data_p);
+
+char ASA_UART_set(char ASAID, char ID, char LSByte, char Mask, char Shift, char Data);
+char ASA_UART_put(char ASAID, char ID, char LSByte, char Bytes, void *Data_p);
+char ASA_UART_get(char ASAID, char ID, char LSByte, char Bytes, void *Data_p);
+char ASA_UART_fpt(char ASAID, char ID, char LSByte, char Mask, char Shift, char Data);
+char ASA_UART_fgt(char ASAID, char ID, char LSByte, char Mask, char Shift, char *Data);
+char ASA_RS485_set(char ASAID, char ID, char LSByte, char Mask, char Shift, char Data);
+char ASA_RS485_put(char ASAID, char ID, char LSByte, char Bytes, void *Data_p);
+char ASA_RS485_get(char ASAID, char ID, char LSByte, char Bytes, void *Data_p);
+char ASA_RS485_fpt(char ASAID, char ID, char LSByte, char Mask, char Shift, char Data);
+char ASA_RS485_fgt(char ASAID, char ID, char LSByte, char Mask, char Shift, char *Data);
 
 /**7S00**/
 char ASA_7S00_set(char ASA_ID, char LSByte, char Mask, char shift, char Data);
@@ -57,7 +72,7 @@ char ASA_ACC00_get(char ASA_ID, char LSByte, char Bytes, void *Data_p);
 /**ADC00**/
 char ASA_ADC00_set(char ASA_ID, char LSByte, char Mask, char shift, char Data);
 char ASA_ADC00_get(char ASA_ID, char LSByte, char Bytes, void *Data_p);
-
+ 
 /**DAC00**/
 char ASA_DAC00_set(char ASA_ID, char LSByte, char Mask, char shift, char Data);
 char ASA_DAC00_put(char ASA_ID, char LSByte, char Bytes, void *Data_p);
@@ -72,6 +87,9 @@ char ASA_DIO00_fgt(char ASA_ID, char LSByte, char Mask, char shift, void *Data_p
 /**GR00**/
 char ASA_GR00_set(char ASA_ID, char LSByte, char Mask, char shift, char Data);
 char ASA_GR00_get(char ASA_ID, char LSByte, char Bytes, void *Data_p);
+
+/**JS00**/
+char ASA_JS00_get(char ASA_ID, char LSByte, char Bytes, void *Data_p);
 
 /**KB00**/
 char ASA_KB00_set(char ASA_ID, char LSByte, char Mask, char shift, char Data);
