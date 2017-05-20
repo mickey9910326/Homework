@@ -1,6 +1,6 @@
-#include "ASA_IC.h"
+#include "ASA_XXX.h"
 
-char ic_set(char LSByte, char Mask, char shift, char Data) {
+char XXX_set(char LSByte, char Mask, char shift, char Data) {
     if ( LSByte == 101 ) {
         return 0;
     } else {
@@ -8,7 +8,7 @@ char ic_set(char LSByte, char Mask, char shift, char Data) {
     }
 }
 
-char ic_put(char LSByte, char Bytes, void *Data_p) {
+char XXX_put(char LSByte, char Bytes, void *Data_p) {
     if ( LSByte == 101 ) {
         return 0;
     } else {
@@ -16,7 +16,7 @@ char ic_put(char LSByte, char Bytes, void *Data_p) {
     }
 }
 
-char ic_get(char LSByte, char Bytes, void *Data_p) {
+char XXX_get(char LSByte, char Bytes, void *Data_p) {
     if ( LSByte == 101 ) {
         return 0;
     } else {
@@ -24,7 +24,7 @@ char ic_get(char LSByte, char Bytes, void *Data_p) {
     }
 }
 
-char ic_fpt(char LSByte, char Mask, char shift, char Data) {
+char XXX_fpt(char LSByte, char Mask, char shift, char Data) {
     if ( LSByte == 101 ) {
         return 0;
     } else {
@@ -32,7 +32,7 @@ char ic_fpt(char LSByte, char Mask, char shift, char Data) {
     }
 }
 
-char ic_fgt(char LSByte, char Mask, char shift, char* Data_p) {
+char XXX_fgt(char LSByte, char Mask, char shift, char* Data_p) {
     if ( LSByte == 101 ) {
         return 0;
     } else {
