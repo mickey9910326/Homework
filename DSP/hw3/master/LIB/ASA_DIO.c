@@ -1,6 +1,6 @@
+#include "ASA_DIO.h"
 #include <avr/io.h>
 #include "ASA_general.h"
-#include "ASA_DIO.h"
 #include "bit_op.h"
 
 char M128_DIO_set(char LSByte, char Mask, char shift, char Data) {

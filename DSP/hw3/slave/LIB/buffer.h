@@ -13,7 +13,7 @@ char buffer_get_bytes(TypeOfBuffer* Buffer_p, char Bytes, void *Data_p);
 char buffer_put_bytes(TypeOfBuffer* Buffer_p, char Bytes, void *Data_p);
 
 char buffer_get(TypeOfBuffer* Buffer_p, char* Data_p);
-char buffer_put(TypeOfBuffer* Buffer_p, char* Data_p);
+char buffer_put(TypeOfBuffer* Buffer_p, char Data);
 void buffer_clear(TypeOfBuffer* Buffer_p);
 
 #endif

@@ -30,10 +30,11 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 LIBS = -lm -lprintf_flt -lscanf_flt
 
 ## Objects that must be built in order to link
-OBJECTS = ASA_DIO.o ASA_SPI.o buffer.o ASA_slave_SPI.o ASA_XXX.o
+OBJECTS = ASA_slave_SPI.o ASA_XXX.o ASA_STDIO.o
 
 ## Objects explicitly added by the user
-LINKONLYOBJECTS = ".\LIB\ASA_Lib.o"
+# LINKONLYOBJECTS = ".\LIB\ASA_Lib.o"
+LINKONLYOBJECTS =
 
 ## Build
 help:
@@ -49,7 +50,7 @@ ASA_SPI.o: ./LIB/ASA_SPI.c
 ASA_slave_SPI.o: ./LIB/ASA_slave_SPI.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-buffer.o: ./LIB/buffer.c
+ASA_STDIO.o: ./LIB/ASA_STDIO.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ASA_XXX.o: ./LIB/ASA_XXX.c

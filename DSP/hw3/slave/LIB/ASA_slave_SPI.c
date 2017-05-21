@@ -1,13 +1,9 @@
-#include <string.h>
-#include "buffer.h"
 #include "ASA_slave_SPI.h"
 #include "ASA_XXX.h"
-#include <stdlib.h>
 #include <avr\io.h>
 #include <avr\interrupt.h>
-#include <stdio.h>
+#include <stdlib.h>
 #include <util\delay.h>
-#define MAXBUFFBYTES 32
 
 #define STAT_HEADER 0
 #define STAT_CALLTYPE 1
@@ -25,11 +21,8 @@
 #define CALLTYPE_FPT 3
 #define CALLTYPE_FGT 4
 
-#define SPI_HEADER_BIN 0xAA
-
-// SPI通訊處理用資料結構slave_SPI_swap_str：資料結構內要有一欄
-// 記錄狀態機械狀態，一欄可存放通訊命令封包緩衝區指標，另一欄存放通訊回
-// 應封包緩衝區指標。
+#define SPI_HEADER_GET_BIN 0xAA
+#define SPI_HEADER_RES_BIN 0xAB
 
 TypeOfBuffer Com_Buff_str;
 TypeOfBuffer Res_Buff_str;
@@ -63,20 +56,20 @@ void slave_SPI_PacDe_ini(
 char slave_SPI_PacDe_step( TypeOfSlave_SPI_PacDe* str_p ) {
     // this is the part to get data from master
     // PROBLEM : how to combine get part and put part in SPI
-    static unsigned char count=0, times=0, CheckSum;
+    static unsigned char count=0, times=0;
 
     if( str_p->InBUFF_p->GETindex == str_p->InBUFF_p->PUTindex ){
         return 1;
     }
 
     char GetData = str_p->InBUFF_p->data[str_p->InBUFF_p->GETindex];
-    str_p->InBUFF_p->GETindex++;
+    str_p->InBUFF_p->GETindex = (1 + str_p->InBUFF_p->GETindex)%32;
 
     switch(str_p->statuse) {
         case STAT_HEADER:
             // handle data
             times++;
-            if ( GetData == SPI_HEADER_BIN ) {
+            if ( GetData == SPI_HEADER_GET_BIN ) {
                 count ++;
             } else {
                 times = 0 ;
@@ -104,7 +97,7 @@ char slave_SPI_PacDe_step( TypeOfSlave_SPI_PacDe* str_p ) {
 
         case STAT_LSBYTE:
             // handle data
-            CheckSum += GetData;
+            str_p->CheckSum += GetData;
             str_p->LSByte = GetData;
             // Switch to other statuse
             switch (str_p->CallType) {
@@ -159,8 +152,8 @@ char slave_SPI_PacDe_step( TypeOfSlave_SPI_PacDe* str_p ) {
         case STAT_DATA:
             // handle data
             str_p->CheckSum += GetData;
-            count++;
             ((char *)str_p->Data_p)[count] = GetData;
+            count++;
             // Switch to other statuse
             if (count==str_p->Bytes){
                 str_p->statuse = STAT_CHECKSUM;
@@ -170,8 +163,7 @@ char slave_SPI_PacDe_step( TypeOfSlave_SPI_PacDe* str_p ) {
 
         case STAT_CHECKSUM:
             // handle data
-            printf("checksum\n");
-            if (CheckSum != GetData) {
+            if (str_p->CheckSum != GetData) {
                 str_p->statuse = STAT_ERROR;
                 return 5;
             }
@@ -197,25 +189,69 @@ char slave_SPI_PacDe_step( TypeOfSlave_SPI_PacDe* str_p ) {
                     str_p->statuse = STAT_ERROR;
                     return 2;
             }
-            str_p->OutBUFF_p->data[str_p->OutBUFF_p->PUTindex]=check;
-            str_p->OutBUFF_p->PUTindex++;
 
+            // respond
+            buffer_put(str_p->OutBUFF_p,SPI_HEADER_RES_BIN);
+            buffer_put(str_p->OutBUFF_p,SPI_HEADER_RES_BIN);
+            buffer_put(str_p->OutBUFF_p,SPI_HEADER_RES_BIN);
+            buffer_put(str_p->OutBUFF_p,check);
             if (!check)
-            for (int i = 0; i < str_p->Bytes; i++) {
-                str_p->OutBUFF_p->data[str_p->OutBUFF_p->PUTindex]=((char*)str_p->Data_p)[i];
-                str_p->OutBUFF_p->PUTindex++;
+            switch (str_p->CallType) {
+                case CALLTYPE_PUT:
+                case CALLTYPE_FPT:
+                case CALLTYPE_SET:
+                    break;
+                case CALLTYPE_GET:
+                    for (int i = 0; i < str_p->Bytes; i++) {
+                        buffer_put(str_p->OutBUFF_p,((char*)str_p->Data_p)[i]);
+                    }
+                    break;
+                case CALLTYPE_FGT:
+                    buffer_put(str_p->OutBUFF_p,((char*)str_p->Data_p)[0]);
+                    break;
+                default:
+                    return 2;
             }
             // Switch to other statuse
             str_p->statuse = STAT_HEADER;
             break;
-    } /// end sithch statuse
+    } /// end switch statuse
     return 0;
 }
 
 ISR(SPI_STC_vect) {
-    char getdata = SPDR;
-    buffer_put_bytes(&Com_Buff_str,1,&getdata);
-    if ( buffer_get(&Res_Buff_str,&getdata) ) {
-        SPDR = getdata;
+    if ( ((Com_Buff_str.PUTindex +1)%MAXBUFFBYTES) != Com_Buff_str.GETindex ) {
+        Com_Buff_str.data[Com_Buff_str.PUTindex] = SPDR;
+        Com_Buff_str.PUTindex = (Com_Buff_str.PUTindex + 1) % MAXBUFFBYTES;
     }
+    if (Res_Buff_str.PUTindex != Res_Buff_str.GETindex) {
+        SPDR = Res_Buff_str.data[Res_Buff_str.GETindex];
+        Res_Buff_str.GETindex = (Res_Buff_str.GETindex + 1) % MAXBUFFBYTES;
+    }
+}
+
+/* BUFFER  function */
+char buffer_get(TypeOfBuffer* Buffer_p, char* Data_p) {
+    //get 1 byte data in BUFFER
+    if (Buffer_p->PUTindex != Buffer_p->GETindex) {
+        *Data_p = Buffer_p->data[Buffer_p->GETindex];
+        Buffer_p->GETindex = (Buffer_p->GETindex + 1) % MAXBUFFBYTES;
+        return 0;
+    }
+    return 1;
+}
+
+char buffer_put(TypeOfBuffer* Buffer_p, char Data) {
+    //put 1 byte data to BUFFER
+    if ( ((Buffer_p->PUTindex +1)%MAXBUFFBYTES) != Buffer_p->GETindex) {
+        Buffer_p->data[Buffer_p->PUTindex] = Data;
+        Buffer_p->PUTindex = (Buffer_p->PUTindex + 1) % MAXBUFFBYTES;
+        return 0;
+    }
+    return 1;
+}
+
+void buffer_clear(TypeOfBuffer* Buffer_p){
+    Buffer_p->GETindex = 0;
+    Buffer_p->PUTindex = 0;
 }

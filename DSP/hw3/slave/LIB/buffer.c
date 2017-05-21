@@ -73,10 +73,10 @@ char buffer_get(TypeOfBuffer* Buffer_p, char* Data_p) {
     return 1;
 }
 
-char buffer_put(TypeOfBuffer* Buffer_p, char* Data_p) {
+char buffer_put(TypeOfBuffer* Buffer_p, char Data) {
     //put 1 byte data to BUFFER
     if ( ((Buffer_p->PUTindex +1)%MAXBUFFBYTES) != Buffer_p->GETindex) {
-        Buffer_p->data[Buffer_p->PUTindex] = *Data_p;
+        Buffer_p->data[Buffer_p->PUTindex] = Data;
         Buffer_p->PUTindex = (Buffer_p->PUTindex + 1) % MAXBUFFBYTES;
         return 0;
     }
