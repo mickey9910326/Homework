@@ -27,14 +27,14 @@ int main() {
 
     while (1) {
         count++;
-        data = count;
-        printf("data=%3d",count);
+        printf("data=");
+        scanf("%d",&tmp);
+        data = tmp;
         M128_DIO_fpt(ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,ASA_ID);
         M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
         M128_SPI_put(1,0,1,&data);
         M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
-        printf(",getdata =%3d\n", data);
-        scanf("%d",&tmp);
+        printf("times%2d,getdata =%3d\n", count, data);
     }
     return 0;
 }

@@ -1,5 +1,5 @@
 ## General Flags
-MCU = atmega128
+MCU = atmega88
 CC = avr-gcc
 CPP = avr-g++
 
@@ -8,7 +8,7 @@ COMMON = -mmcu=$(MCU)
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
-CFLAGS += -Wall -gdwarf-2 -std=gnu99  -DF_CPU=11059200UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
+CFLAGS += -Wall -gdwarf-2 -std=gnu99  -DF_CPU=8000000UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 # CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d
 
 ## Assembly specific flags
@@ -27,10 +27,12 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 ## Libraries
-LIBS = -lm -lprintf_flt -lscanf_flt
+# LIBS = -lm -lprintf_flt -lscanf_flt
 
 ## Objects that must be built in order to link
-OBJECTS = ASA_slave_SPI.o ASA_XXX.o ASA_STDIO.o
+OBJECTS += ASA_slave_SPI.o
+OBJECTS += ASA_XXX.o
+OBJECTS += ASA_STDIO.o
 
 ## Objects explicitly added by the user
 # LINKONLYOBJECTS = ".\LIB\ASA_Lib.o"

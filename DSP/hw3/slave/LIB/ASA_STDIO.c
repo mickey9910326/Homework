@@ -46,12 +46,6 @@ char ASA_STDIO_set(void)
 	UCSR0B |= (1<<RXEN0) | (1<<TXEN0);
 	UCSR0C |= (3<<UCSZ00);
 
-	UBRR1H = (unsigned char)(baud>>8);
-	UBRR1L = (unsigned char)baud;
-
-	UCSR1B |= (1<<RXEN1) | (1<<TXEN1);
-	UCSR1C |= (3<<UCSZ10);
-
 	stdout = &STDIO_BUFFER;
 	stdin = &STDIO_BUFFER;
 

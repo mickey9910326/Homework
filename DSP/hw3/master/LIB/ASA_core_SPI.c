@@ -17,7 +17,6 @@ char ASA_SPI_swap(char data) {
     M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 1);
     M128_SPI_put(1,0,1,&res);
     M128_DIO_fpt(CS_PORT_NUM, CS_PORT_MSK, CS_PORT_SHT, 0);
-    _delay_us(1);
     return res;
 }
 

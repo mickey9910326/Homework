@@ -15,22 +15,35 @@ int main() {
     char ASA_ID = 1;
     set_id(ASA_ID);
 
-    char check,data;
-    data = 123;
-    check = ASA_SPI_put(101,1,&data);
-    printf("test ASA_SPI_put exp:[r,d]=[%d,%d],res:[r,d]=[%d,%d]\n",0,123,check,data);
+    char lsbyte,bytes,check,data;
+
+    lsbyte=101,bytes=1,data = 123;
+    printf("test1\n");
+    printf("    ASA_SPI_put(%3d,%d,&data) ,data = %d \n",lsbyte,bytes,data);
+    check = ASA_SPI_put(lsbyte,bytes,&data);
+    printf("    exp=[%3d,%d],res=[%3d,%d]\n",0,0,check,data);
     _delay_ms(100);
-    data = 122;
-    check = ASA_SPI_put(1,1,&data);
-    printf("test ASA_SPI_put exp:[r,d]=[%d,%d],res:[r,d]=[%d,%d]\n",1,0,check,data);
+
+    lsbyte=1,bytes=1,data = 122;
+    printf("test2\n");
+    printf("    ASA_SPI_put(%3d,%d,&data) ,data = %d \n",lsbyte,bytes,data);
+    check = ASA_SPI_put(lsbyte,bytes,&data);
+    printf("    exp=[%3d,%d],res=[%3d,%d]\n",1,0,check,data);
     _delay_ms(100);
-    data = 123;
-    check = ASA_SPI_get(101,1,&data);
-    printf("test ASA_SPI_put exp:[r,d]=[%d,%d],res:[r,d]=[%d,%d]\n",0,123,check,data);
+
+    lsbyte=101,bytes=1,data = 121;
+    printf("test3\n");
+    printf("    ASA_SPI_get(%3d,%d,&data) ,data = %d \n",lsbyte,bytes,data);
+    check = ASA_SPI_get(lsbyte,bytes,&data);
+    printf("    exp=[%3d,%d],res=[%3d,%d]\n",0,0,check,data);
     _delay_ms(100);
-    data = 123;
-    check = ASA_SPI_set(101,1,1,3);
-    printf("test ASA_SPI_put exp:[r,d]=[%d,%d],res:[r,d]=[%d,%d]\n",0,123,check,data);
+
+    lsbyte=10,bytes=1,data = 120;
+    printf("test4\n");
+    printf("    ASA_SPI_get(%3d,%d,&data) ,data = %d \n",lsbyte,bytes,data);
+    check = ASA_SPI_get(lsbyte,bytes,&data);
+    printf("    exp=[%3d,%d],res=[%3d,%d]\n",1,0,check,data);
+    _delay_ms(100);
 
     return 0;
 }
@@ -47,7 +60,9 @@ void master_spi_ini(){
 
     // set ADDR pins (PB5~7) as output
     M128_DIO_set(200+ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,7);
-    M128_SPI_set(200,0xFF,0,(1<<SPE)|(1<<MSTR)|(0<<SPIE));
+
+    M128_SPI_set(200,0xFF,0,(1<<SPE)|(1<<MSTR)|(0<<SPIE)|(0<<SPR1)|(1<<SPR0));
+    SPSR |= (1<<SPI2X);
 }
 
 void set_id(char ASA_ID){

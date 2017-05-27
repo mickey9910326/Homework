@@ -6,10 +6,10 @@
 
 #define DDR_SPI_num 1
 #define DDR_SPI DDRB
-#define DD_MISO DDB3
-#define DD_MOSI DDB2
-#define DD_SCK  DDB1
-#define DD_SS   DDB0
+#define DD_MISO DDB4
+#define DD_MOSI DDB3
+#define DD_SCK  DDB5
+#define DD_SS   DDB2
 // SPI use PORTB
 
 #define CS_pin PF4
