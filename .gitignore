@@ -4,5 +4,6 @@
 *.demo.cpp
 *.zip
 *.rar
+*.gch
 *.pdf
 **/hex
