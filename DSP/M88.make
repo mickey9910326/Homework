@@ -1,5 +1,5 @@
 ## General Flags
-MCU = atmega128
+MCU = atmega88
 CC = avr-gcc
 CPP = avr-g++
 
@@ -30,33 +30,44 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 LIBS = -lm -lprintf_flt -lscanf_flt
 
 ## Objects that must be built in order to link
-OBJECTS = ASA_SPI.o ASA_TWI.o ASA_STDIO.o
+LIBSRC = $(wildcard LIB/*.c)
+LIBOBJS = $(patsubst %.c,%.o,$(LIBSRC))
 
 ## Objects explicitly added by the user
-# LINKONLYOBJECTS = "..\ASAlib\ASA_Lib.o"
+# LINKONLYLIBOBJS = "..\ASAlib\ASA_Lib.o"
+VPATH =
 
 ## Build
 help:
 	@echo "use \"make {filename}.a\" to complie .c to .hex in dir ./hex"
 
-## LIB OBJECTS Compile
-ASA_TWI.o: ../LIB/ASA_TWI.c
+## LIB LIBOBJS Compile
+ASA_TWI.o: ./LIB/ASA_TWI.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-ASA_SPI.o: ../LIB/ASA_SPI.c
+ASA_SPI.o: ./LIB/ASA_SPI.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-ASA_STDIO.o: ../LIB/ASA_STDIO.c
+ASA_STDIO.o: ./LIB/ASA_STDIO.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-ASA_MAX7219.o: ../LIB/ASA_MAX7219.c
+ASA_MAX7219.o: ./LIB/ASA_MAX7219.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+ASA_DIO.o: ./LIB/ASA_DIO.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+ASA_UART.o: ./LIB/ASA_UART.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
+
+## project
+uart-test1: ./UART/test1/master_main.hex ./UART/test1/slave_main.hex
+uart-test2: ./UART/test2/master_main.hex ./UART/test2/slave_main.hex
 
 ##Link
-%.elf: %.o $(OBJECTS)
-	 $(CC) $(LDFLAGS) $< $(OBJECTS) $(LINKONLYOBJECTS) $(LIBDIRS) $(LIBS) -o $@
+%.elf: %.o $(LIBOBJS)
+	 $(CC) $(LDFLAGS) $< $(LIBOBJS) $(LINKONLYLIBOBJS) $(LIBDIRS) $(LIBS) -o $@
 
-%.hex: %.elf
+%.hex: $(LIBOBJS) %.elf
 	avr-objcopy -O ihex $(HEX_FLASH_FLAGS)  $< $@
 
 %.a: %.elf %.hex
@@ -64,7 +75,7 @@ ASA_MAX7219.o: ../LIB/ASA_MAX7219.c
 	@avr-size -C --mcu=${MCU} $<
 	@-mkdir -p hex
 	@-mv $*.hex hex/
-	@-rm -rf $(OBJECTS) $*.map $*.o $<
+	@-rm -rf $(LIBOBJS) $*.map $*.o $<
 
 %.eep: %.elf
 	-avr-objcopy $(HEX_EEPROM_FLAGS) -O ihex $< $@ || exit 0
@@ -79,4 +90,4 @@ size: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS) *.elf *.hex ./hex/*
+	-rm -rf $(LIBOBJS) *.elf *.hex ./hex/*

@@ -1,8 +1,11 @@
-#include "..\LIB\ASA_TWI.h"
-#include "..\LIB\ASA_DEVICE.h"
-#include "..\LIB\ASA_STDIO.h"
-#include "..\LIB\ASA_SPI.h"
-#include "..\LIB\ASA_DIO.h"
+#include "..\..\LIB\ASA_TWI.h"
+#include "..\..\LIB\ASA_DEVICE.h"
+#include "..\..\LIB\ASA_STDIO.h"
+#include "..\..\LIB\ASA_SPI.h"
+#include "..\..\LIB\ASA_DIO.h"
+#include "..\..\LIB\ASA_UART.h"
+
+
 void ASA_ID_init();
 void ASA_ID_set(char ASA_ID);
 
@@ -11,6 +14,13 @@ int main() {
     ASA_ID_init();
     ASA_ID_set(1);
     printf("Start-------------\n");
+    UART1_init();
+    unsigned char data = 0;
+
+    while (1) {
+        data++;
+        UART1_putchar(data);
+    }
 
     return 0;
 }
