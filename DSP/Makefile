@@ -1,5 +1,5 @@
 MASTER_MAKE = -f M128.make
-SLAVE_MAKE = -f M88.make
+SLAVE_MAKE = -f M128.make
 
 ## Build
 help:
@@ -8,3 +8,11 @@ help:
 uart-test1:
 	make $(MASTER_MAKE) ./UART/test1/master_main.hex
 	make $(SLAVE_MAKE) ./UART/test1/slave_main.hex
+
+uart-test2:
+	make $(MASTER_MAKE) ./UART/test2/master_main.hex
+	make $(SLAVE_MAKE) ./UART/test2/slave_main.hex
+
+uart-test3:
+	make $(MASTER_MAKE) ./UART/test3/master_main.hex
+	make $(SLAVE_MAKE) ./UART/test3/slave_main.hex

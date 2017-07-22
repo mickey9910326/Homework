@@ -1,4 +1,5 @@
 clear;clc;
+clf;
 V0 = 30;
 Lambda = 0.87;
 t  = [0:0.01:20];
@@ -6,8 +7,8 @@ dt = 0.01;
 n  = randi([0 100],1,length(t)) * dt;
 
 Vt = V0 * exp( -1*Lambda*t ) + n;
-
-plot(t,Vt)
+Vs = V0 * exp( -1*Lambda*t ) ;
+plot(t,Vs,'linewidth' , 2)
 
 point = [1;100;20;130;120;140;150;200];
 
@@ -25,6 +26,7 @@ lambda = theta_hat(2)
 
 vt = v0 * exp( -1*lambda*t );
 hold on;
-plot(t,vt,'g')
+plot(t,vt,'r','linewidth' , 2)
+legend('orginal','outcome')
 
-[theda,Yh,E,E_std,theda_std,theda_cov,E_corrcoef] = lse_std(Y,A);
+% [theda,Yh,E,E_std,theda_std,theda_cov,E_corrcoef] = lse_std(Y,A);

@@ -94,10 +94,10 @@ figure(3)
 clf;
 plot(t,Vt);
 hold on;
-plot(t,Vt_true,'r');
+plot(t,Vt_true,'r', 'linewidth' , 2);
 hold on;
 vt = a * exp( -1*lambda*t ) .* cos(w*t+phi) + v0 ;
-plot(t,vt,'g');
+plot(t,vt,'g','linewidth' , 2);
 
 
 legend('singal','orginal','outcome')

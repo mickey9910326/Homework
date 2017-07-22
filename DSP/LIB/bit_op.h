@@ -19,5 +19,4 @@
 #define BITCLR(ADDRESS,BIT)    (ADDRESS &= ~(1<<BIT))
 #define BITCHK(ADDRESS,BIT)    ((ADDRESS & (1<<BIT))==(1<<BIT))
 
-
 #endif

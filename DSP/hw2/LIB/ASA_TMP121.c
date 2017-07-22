@@ -1,15 +1,14 @@
+﻿#include "ASA_TMP121.h"
 #include "ASA_DIO.h"
 #include "ASA_SPI.h"
-#include <avr/io.h>
-#include <util\delay.h>
 #include "ASA_general.h"
-#include "ASA_TMP121.h"
 
 void ASA_TMP121_ini() {
     // set ADDR pins (PB5~7) as output
     M128_DIO_set(200+ADDR_PORT_num,ADDR_PORT_msk,ADDR_PORT_sht,7);
     M128_SPI_set(200,0xFF,0,(1<<SPE)|(1<<MSTR));
 }
+
 char ASA_TMP121_get(char ASA_ID, char LSByte, char Bytes, void *Data_p) {
     if(ASA_ID>7)    { return 1; }
     if(LSByte!=100) { return 2; }
