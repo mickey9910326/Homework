@@ -7,18 +7,11 @@ void UART_init();
 
 int main() {
     ASA_STDIO_set();
-    ASA_ID_init();
-    ASA_ID_set(1);
-    printf("Start-------------\n");
-    UART_init();
-    unsigned char data = 0;
-    int intput;
-
-    while (1) {
-        scanf("%d\n", &intput);
-        data = intput;
-        UART1_putchar(data);
-    }
+    printf("set check = %d\n",0 );
+    printf("put check = %d\n",0 );
+    printf("get check = %d\n",0 );
+	printf("g1  %d\n", 87);
+	printf("g2  %d\n", 78);
 
     return 0;
 }

@@ -7,4 +7,5 @@
 *.gch
 *.pdf
 *.map
+*.hex
 **/hex

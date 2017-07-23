@@ -4,10 +4,10 @@
 
 void UART1_putchar(char  data)
 {
-	while(!(UCSR1A & (1<<UDRE1)));
 	UDR1 = data;
+	while(!(UCSR1A & (1<<UDRE1)));
 
-	// _delay_us(250);	//wait for data transmitting
+	_delay_us(250);	//wait for data transmitting
 }
 
 char UART1_getchar(void)

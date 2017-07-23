@@ -16,3 +16,8 @@ uart-test2:
 uart-test3:
 	make $(MASTER_MAKE) ./UART/test3/master_main.hex
 	make $(SLAVE_MAKE) ./UART/test3/slave_main.hex
+uart-test4:
+	make $(MASTER_MAKE) ./UART/test4/master_main.hex
+	make $(SLAVE_MAKE) ./UART/test4/slave_main.hex
+clean:
+	-rm -rf $(LIBOBJS) *.elf */*.hex ./hex/*
